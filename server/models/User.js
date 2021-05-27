@@ -1,39 +1,42 @@
 const mongoose = require('mongoose');
+const passportLocalMongoose = require('passport-local-mongoose');
 
-const UserSchema = mongoose.Schema(
+const userSchema = mongoose.Schema(
     {
         role: {
             type: String,
             default: 'user',
         },
+        active: {
+            type: Boolean,
+            default: true,
+        },
+        username: {
+            type: String,
+            lowercase: true,
+            unique: true,
+            trim: true,
+        },
         email: {
             type: String,
             lowercase: true,
-            unique: [true, 'already in use'],
-            required: [true, "can't be blank"],
-            match: [/\S+@\S+\.\S+/, 'is invalid'],
+            unique: true,
+            required: true,
+            trim: true,
         },
         email_confirmed: {
             type: Boolean,
             default: false,
         },
-        password: {
-            type: String,
-            trim: true,
-            minlength: 6,
-            maxlength: 60,
-        },
-        username: {
-            type: String,
-            lowercase: true,
-            unique: [true, 'already in use'],
-            required: [true, "can't be blank"],
-            match: [/^[a-zA-Z0-9_]+$/, 'is invalid'],
-        },
-        temporary_token: {
+        email_temporary_token: {
             type: String,
             default: null,
-            unique: [true, 'already in use'],
+            unique: true,
+        },
+        password_temporary_token: {
+            type: String,
+            default: null,
+            unique: true,
         },
     },
     {
@@ -41,6 +44,12 @@ const UserSchema = mongoose.Schema(
     }
 );
 
-const User = mongoose.model('User', UserSchema);
+const passportLocalMongooseOptions = {
+    usernameField: 'email',
+}
+
+userSchema.plugin(passportLocalMongoose, passportLocalMongooseOptions);
+
+const User = mongoose.model('User', userSchema);
 
 module.exports = User;
