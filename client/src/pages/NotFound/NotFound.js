@@ -1,9 +1,11 @@
 import React from 'react'
 import { connect } from 'react-redux'
 
-export const Header = (props) => {
+export const NotFound = (props) => {
     return (
-        <header>Header</header>
+        <div>
+            NotFound
+        </div>
     )
 }
 
@@ -15,4 +17,4 @@ const mapDispatchToProps = {
     
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Header);
+export default connect(mapStateToProps, mapDispatchToProps)(NotFound)

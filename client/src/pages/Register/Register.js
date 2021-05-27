@@ -1,9 +1,11 @@
 import React from 'react'
 import { connect } from 'react-redux'
 
-export const Footer = (props) => {
+export const Register = (props) => {
     return (
-        <footer>Footer</footer>
+        <div>
+            Register
+        </div>
     )
 }
 
@@ -15,4 +17,4 @@ const mapDispatchToProps = {
     
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Footer)
+export default connect(mapStateToProps, mapDispatchToProps)(Register)
