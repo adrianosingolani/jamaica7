@@ -4,8 +4,8 @@ build
 .env*
 !example.env
 
-security/cert.key
-security/cert.pem
+server/security/cert.key
+server/security/cert.pem
 
 *.log
 
