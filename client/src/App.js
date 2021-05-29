@@ -7,6 +7,7 @@ import Home from './pages/Home/Home';
 import Register from './pages/Register/Register';
 import Login from './pages/Login/Login';
 import NotFound from './pages/NotFound/NotFound';
+import UserSettings from './pages/UserSettings/UserSettings';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
             <Route path="/register" component={Register} />
             <Route path="/login" component={Login} />
             <Route path="/notfound" component={NotFound} />
+            <Route path="/usersettings" component={UserSettings} />
             <Route exact path="/" component={Home} />
             <Route component={NotFound} />
           </Switch>

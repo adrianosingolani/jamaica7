@@ -1,6 +1,12 @@
 node_modules
 build
-.DS_Store
+
 .env*
 !example.env
+
+security/cert.key
+security/cert.pem
+
 *.log
+
+.DS_Store
