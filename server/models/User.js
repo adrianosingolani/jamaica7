@@ -46,6 +46,11 @@ const userSchema = mongoose.Schema(
 
 const passportLocalMongooseOptions = {
     usernameField: 'email',
+    findByUsername: function (model, queryParameters) {
+        // Add additional query parameter - AND condition - active: true
+        queryParameters.active = true;
+        return model.findOne(queryParameters);
+    }
 }
 
 userSchema.plugin(passportLocalMongoose, passportLocalMongooseOptions);

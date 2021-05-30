@@ -1,3 +1,4 @@
+const dotenv = require('dotenv').config();
 const express = require('express');
 const session = require('express-session');
 const passport = require('passport');
@@ -8,7 +9,7 @@ const User = require('../models/User');
 const router = express.Router();
 
 router.use(session({
-    secret: 'mern boilerplate session secret',
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
     cookie: { secure: true }
@@ -35,9 +36,12 @@ router.post('/register', function (req, res) {
     const username = email.split('@')[0] + Date.now();
 
     User.register({ email, username }, password)
-        .then(newUser => {
+        .then(user => {
             // registration successful
-            res.send();
+            req.logIn(user, function (err) {
+                if (user) return res.send();
+                else return res.status(400).send({ message: 'Something went wrong' });
+            });
         })
         .catch(error => {
             // error occurred when registering
@@ -54,7 +58,7 @@ router.post('/login', function (req, res, next) {
             req.logIn(user, function (err) {
                 if (user) return res.send();
                 else return res.status(400).send({ message: 'Something went wrong' });
-            })
+            });
         } else if (info) {
             return res.status(400).send({ message: info.message });
         } else {
@@ -70,9 +74,9 @@ router.post('/logout', function (req, res) {
 });
 
 router.post('/user', function (req, res) {
-    // console.log('isAuthenticated?');
-    // if (req.isAuthenticated()) console.log('yes');
-    // else console.log('no');
+    console.log('isAuthenticated?');
+    if (req.isAuthenticated()) console.log('yes');
+    else console.log('no');
 });
 
 module.exports = router;
