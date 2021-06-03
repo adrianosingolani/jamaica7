@@ -14,6 +14,7 @@ import {
 
 import PasswordField from '../../components/PasswordField/PasswordField';
 import PageContainer from '../../components/PageContainer/PageContainer';
+import AuthLoader from '../../components/AuthLoader/AuthLoader';
 
 import { registerUser } from '../../store/actions/authActions';
 
@@ -58,48 +59,54 @@ export const Register = ({ history, auth, registerUser }) => {
     });
 
     return (
-        <PageContainer title="Register">
-            <form className={classes.form} noValidate onSubmit={formik.handleSubmit}>
-                <TextField
-                    variant="outlined"
-                    margin="normal"
-                    required
-                    fullWidth
-                    id="email"
-                    label="Email"
-                    name="email"
-                    autoComplete="email"
-                    value={formik.values.email}
-                    onChange={formik.handleChange}
-                    error={formik.touched.email && Boolean(formik.errors.email)}
-                    helperText={formik.touched.email && formik.errors.email}
-                />
-                <PasswordField
-                    value={formik.values.password}
-                    onChange={formik.handleChange}
-                    error={formik.touched.password && Boolean(formik.errors.password)}
-                    helperText={formik.touched.password && formik.errors.password}
-                />
-                <Button
-                    type="submit"
-                    fullWidth
-                    variant="contained"
-                    color="primary"
-                    className={classes.submit}
-                >Register</Button>
-                <Grid container>
-                    <Grid item xs></Grid>
-                    <Grid item>
-                        <Link to="#">Already have an account? Log in</Link>
+        <AuthLoader isAuthenticatedCondition={false}>
+            <PageContainer title="Register">
+                <form className={classes.form} noValidate onSubmit={formik.handleSubmit} >
+                    <TextField
+                        variant="outlined"
+                        margin="normal"
+                        required
+                        fullWidth
+                        id="email"
+                        label="Email"
+                        name="email"
+                        autoComplete="email"
+                        value={formik.values.email}
+                        onChange={formik.handleChange}
+                        error={formik.touched.email && Boolean(formik.errors.email)}
+                        helperText={formik.touched.email && formik.errors.email}
+                    />
+                    <PasswordField
+                        value={formik.values.password}
+                        onChange={formik.handleChange}
+                        error={formik.touched.password && Boolean(formik.errors.password)}
+                        helperText={formik.touched.password && formik.errors.password}
+                    />
+                    <Button
+                        type="submit"
+                        fullWidth
+                        variant="contained"
+                        color="primary"
+                        className={classes.submit}
+                    >Register</Button>
+                    <Grid container>
+                        <Grid item xs></Grid>
+                        <Grid item>
+                            <Link to="#">Already have an account? Log in</Link>
+                        </Grid>
                     </Grid>
-                </Grid>
-            </form>
-        </PageContainer>
+                </form >
+            </PageContainer >
+        </AuthLoader>
     )
 }
 
 const mapStateToProps = (state) => ({
-    auth: state.auth
-})
+    auth: state.auth,
+});
 
-export default connect(mapStateToProps, { registerUser })(Register)
+const mapDispatchToProps = {
+    registerUser,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Register)

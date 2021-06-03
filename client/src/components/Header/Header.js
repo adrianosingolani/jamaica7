@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { withRouter } from 'react-router'
 import { connect } from 'react-redux';
 
@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import { AppBar, Toolbar, Typography, Button } from '@material-ui/core/';
 
-import { logOutUser, loadUser } from '../../store/actions/authActions';
+import { logOutUser } from '../../store/actions/authActions';
 
 const useStyles = makeStyles((theme) => ({
     title: {
@@ -16,13 +16,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export const Header = ({ history, auth, loadUser, logOutUser }) => {
-    useEffect(() => {
-        if (!auth.isAuthenticated) {
-            loadUser();
-        }
-    }, [auth.isAuthenticated, loadUser]);
-
+export const Header = ({ history, auth, logOutUser }) => {
     const logOut = () => {
         logOutUser(history);
     }
@@ -54,4 +48,8 @@ const mapStateToProps = (state) => ({
     auth: state.auth
 });
 
-export default connect(mapStateToProps, { logOutUser, loadUser })(withRouter(Header));
+const mapDispatchToProps = {
+    logOutUser,
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Header));

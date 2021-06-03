@@ -15,6 +15,7 @@ import {
 } from '../types';
 
 const initialState = {
+    isLoaded: false,
     isLoading: false,
     error: null,
     isAuthenticated: false,
@@ -37,15 +38,25 @@ export default function authReducer(state = initialState, { type, payload }) {
         case USER_SUCCESS_LOGGED:
             return {
                 ...state,
+                isLoaded: true,
                 isLoading: false,
                 error: null,
                 isAuthenticated: true,
                 user: payload,
             };
-        case LOGOUT_SUCCESS:
         case USER_SUCCESS_NOT_LOGGED:
             return {
                 ...state,
+                isLoaded: true,
+                isLoading: false,
+                error: null,
+                isAuthenticated: false,
+                user: null,
+            };
+        case LOGOUT_SUCCESS:
+            return {
+                ...state,
+                isLoaded: false,
                 isLoading: false,
                 error: null,
                 isAuthenticated: false,
@@ -57,6 +68,7 @@ export default function authReducer(state = initialState, { type, payload }) {
         case LOGOUT_FAIL:
             return {
                 ...state,
+                isLoaded: true,
                 isLoading: false,
                 error: payload.error,
             };

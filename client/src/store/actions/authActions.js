@@ -53,7 +53,7 @@ export const logInUser = (formData, history) => async (dispatch) => {
     });
 };
 
-export const logOutUser = (history) =>  async (dispatch) => {
+export const logOutUser = (history) => async (dispatch) => {
   dispatch({ type: LOGOUT_LOADING });
 
   axios.post('/auth/logout')
