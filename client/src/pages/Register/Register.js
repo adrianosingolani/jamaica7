@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
@@ -7,15 +7,13 @@ import * as yup from 'yup';
 
 import { makeStyles } from '@material-ui/core/styles';
 import {
-    Container,
     TextField,
-    CssBaseline,
-    Typography,
     Button,
     Grid,
 } from '@material-ui/core';
 
 import PasswordField from '../../components/PasswordField/PasswordField';
+import PageContainer from '../../components/PageContainer/PageContainer';
 
 import { registerUser } from '../../store/actions/authActions';
 
@@ -31,11 +29,6 @@ const validationSchema = yup.object({
 });
 
 const useStyles = makeStyles((theme) => ({
-    paper: {
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-    },
     form: {
         marginTop: theme.spacing(1),
     },
@@ -44,7 +37,13 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export const Register = ({ history, registerUser }) => {
+export const Register = ({ history, auth, registerUser }) => {
+    useEffect(() => {
+        if (auth.isAuthenticated) {
+            history.push('/usersettings');
+        }
+    }, [auth.isAuthenticated, history]);
+
     const classes = useStyles();
 
     const formik = useFormik({
@@ -59,51 +58,48 @@ export const Register = ({ history, registerUser }) => {
     });
 
     return (
-        <Container component="main" maxWidth="xs">
-            <CssBaseline />
-            <div className={classes.paper}>
-                <Typography component="h1" variant="h5">Register</Typography>
-                <form className={classes.form} noValidate onSubmit={formik.handleSubmit}>
-                    <TextField
-                        variant="outlined"
-                        margin="normal"
-                        required
-                        fullWidth
-                        id="email"
-                        label="Email"
-                        name="email"
-                        autoComplete="email"
-                        value={formik.values.email}
-                        onChange={formik.handleChange}
-                        error={formik.touched.email && Boolean(formik.errors.email)}
-                        helperText={formik.touched.email && formik.errors.email}
-                    />
-                    <PasswordField
-                        value={formik.values.password}
-                        onChange={formik.handleChange}
-                        error={formik.touched.password && Boolean(formik.errors.password)}
-                        helperText={formik.touched.password && formik.errors.password}
-                    />
-                    <Button
-                        type="submit"
-                        fullWidth
-                        variant="contained"
-                        color="primary"
-                        className={classes.submit}
-                    >Register</Button>
-                    <Grid container>
-                        <Grid item xs></Grid>
-                        <Grid item>
-                            <Link to="#">Already have an account? Log in</Link>
-                        </Grid>
+        <PageContainer title="Register">
+            <form className={classes.form} noValidate onSubmit={formik.handleSubmit}>
+                <TextField
+                    variant="outlined"
+                    margin="normal"
+                    required
+                    fullWidth
+                    id="email"
+                    label="Email"
+                    name="email"
+                    autoComplete="email"
+                    value={formik.values.email}
+                    onChange={formik.handleChange}
+                    error={formik.touched.email && Boolean(formik.errors.email)}
+                    helperText={formik.touched.email && formik.errors.email}
+                />
+                <PasswordField
+                    value={formik.values.password}
+                    onChange={formik.handleChange}
+                    error={formik.touched.password && Boolean(formik.errors.password)}
+                    helperText={formik.touched.password && formik.errors.password}
+                />
+                <Button
+                    type="submit"
+                    fullWidth
+                    variant="contained"
+                    color="primary"
+                    className={classes.submit}
+                >Register</Button>
+                <Grid container>
+                    <Grid item xs></Grid>
+                    <Grid item>
+                        <Link to="#">Already have an account? Log in</Link>
                     </Grid>
-                </form>
-            </div>
-        </Container>
+                </Grid>
+            </form>
+        </PageContainer>
     )
 }
 
 const mapStateToProps = (state) => ({
+    auth: state.auth
 })
 
 export default connect(mapStateToProps, { registerUser })(Register)

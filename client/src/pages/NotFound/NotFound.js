@@ -1,11 +1,11 @@
-import React from 'react'
-import { connect } from 'react-redux'
+import React from 'react';
+import { connect } from 'react-redux';
+
+import PageContainer from '../../components/PageContainer/PageContainer';
 
 export const NotFound = (props) => {
     return (
-        <div>
-            NotFound
-        </div>
+        <PageContainer title="Not Found"></PageContainer>
     )
 }
 

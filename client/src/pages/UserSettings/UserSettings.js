@@ -4,11 +4,10 @@ import { connect } from 'react-redux';
 import { useFormik } from 'formik';
 // import * as yup from 'yup';
 
+import PageContainer from '../../components/PageContainer/PageContainer';
+
 import { makeStyles } from '@material-ui/core/styles';
 import {
-    Container,
-    CssBaseline,
-    Typography,
     Button,
 } from '@material-ui/core';
 
@@ -42,21 +41,17 @@ export const UserSettings = ({ loadUser }) => {
     });
 
     return (
-        <Container component="main" maxWidth="xs">
-            <CssBaseline />
-            <div className={classes.paper}>
-                <Typography component="h1" variant="h5">User</Typography>
-                <form className={classes.form} noValidate onSubmit={formik.handleSubmit}>
-                    <Button
-                        type="submit"
-                        fullWidth
-                        variant="contained"
-                        color="primary"
-                        className={classes.submit}
-                    >Load User</Button>
-                </form>
-            </div>
-        </Container>
+        <PageContainer title="User Settings">
+            <form className={classes.form} noValidate onSubmit={formik.handleSubmit}>
+                <Button
+                    type="submit"
+                    fullWidth
+                    variant="contained"
+                    color="primary"
+                    className={classes.submit}
+                >Load User</Button>
+            </form>
+        </PageContainer>
     )
 }
 

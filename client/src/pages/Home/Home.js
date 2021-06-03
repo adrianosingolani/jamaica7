@@ -1,11 +1,16 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
+import PageContainer from '../../components/PageContainer/PageContainer';
+
 export const Home = (props) => {
     return (
-        <div>
-            Home
-        </div>
+        <PageContainer title= 'Home'>
+            <p>1</p>
+            <p>2</p>
+            <p>3</p>
+            <p>testando</p>
+        </PageContainer>
     )
 }
 
@@ -13,8 +18,4 @@ const mapStateToProps = (state) => ({
     
 })
 
-const mapDispatchToProps = {
-    
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Home);
+export default connect(mapStateToProps, {})(Home);

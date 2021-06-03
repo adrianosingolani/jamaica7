@@ -55,8 +55,12 @@ router.post('/login', function (req, res, next) {
 
     passport.authenticate('local', function (err, user, info) {
         if (user) {
+            const loggedUser = {
+                username: user.username,
+                email: user.email,
+            }
             req.logIn(user, function (err) {
-                if (user) return res.send();
+                if (user) return res.send({ user: loggedUser, message: 'User logged in successfully' });
                 else return res.status(400).send({ message: 'Something went wrong' });
             });
         } else if (info) {
@@ -74,9 +78,19 @@ router.post('/logout', function (req, res) {
 });
 
 router.post('/user', function (req, res) {
-    console.log('isAuthenticated?');
-    if (req.isAuthenticated()) console.log('yes');
-    else console.log('no');
+    // console.log('isAuthenticated?');
+    // if (req.isAuthenticated()) console.log('yes');
+    // else console.log('no');
+    
+    if (req.user) {
+        const loggedUser = {
+            username: req.user.username,
+            email: req.user.email,
+        }
+        res.send({ user: loggedUser, message: 'User already logged' });
+    } else {
+        res.send({ user: null, message: 'User not logged' });
+    }
 });
 
 module.exports = router;

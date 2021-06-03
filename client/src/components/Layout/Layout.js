@@ -20,7 +20,9 @@ const Layout = ({ children }) => {
   return (
     <React.Fragment>
       <Header />
-      <Box className={classes.box}>{children}</Box>
+      <Box className={ classes.box }>
+        { children }
+      </Box>
       <Footer />
     </React.Fragment>
   );

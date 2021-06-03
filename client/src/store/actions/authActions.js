@@ -11,7 +11,8 @@ import {
   LOGOUT_SUCCESS,
   LOGOUT_FAIL,
   USER_LOADING,
-  USER_SUCCESS,
+  USER_SUCCESS_LOGGED,
+  USER_SUCCESS_NOT_LOGGED,
   USER_FAIL,
 } from '../types';
 
@@ -22,9 +23,9 @@ export const registerUser = (formData, history) => async (dispatch) => {
     .then(res => {
       dispatch({
         type: REGISTER_SUCCESS,
-        payload: { user: res.data.user },
+        payload: res.data.user,
       });
-      history.push('/usersettings');
+      history.push('/login');
     })
     .catch(err => {
       dispatch({
@@ -41,9 +42,8 @@ export const logInUser = (formData, history) => async (dispatch) => {
     .then(res => {
       dispatch({
         type: LOGIN_SUCCESS,
-        payload: { user: res.data.user },
+        payload: res.data.user,
       });
-      history.push('/usersettings');
     })
     .catch(err => {
       dispatch({
@@ -71,16 +71,22 @@ export const logOutUser = (history) =>  async (dispatch) => {
     });
 }
 
-
 export const loadUser = (formData) => async (dispatch) => {
   dispatch({ type: USER_LOADING });
 
   axios.post('/auth/user', formData)
     .then(res => {
-      console.log(res);
-      dispatch({
-        type: USER_SUCCESS,
-      });
+      if (res.data.user) {
+        dispatch({
+          type: USER_SUCCESS_LOGGED,
+          payload: res.data.user,
+        });
+      } else {
+        dispatch({
+          type: USER_SUCCESS_NOT_LOGGED,
+          payload: { error: 'user not logged' },
+        });
+      }
     })
     .catch(err => {
       console.log(err);

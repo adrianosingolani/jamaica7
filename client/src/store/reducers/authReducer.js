@@ -9,13 +9,16 @@ import {
     LOGOUT_SUCCESS,
     LOGOUT_FAIL,
     USER_LOADING,
-    USER_SUCCESS,
+    USER_SUCCESS_LOGGED,
+    USER_SUCCESS_NOT_LOGGED,
     USER_FAIL,
 } from '../types';
 
 const initialState = {
     isLoading: false,
     error: null,
+    isAuthenticated: false,
+    user: null,
 };
 
 export default function authReducer(state = initialState, { type, payload }) {
@@ -31,22 +34,22 @@ export default function authReducer(state = initialState, { type, payload }) {
             };
         case REGISTER_SUCCESS:
         case LOGIN_SUCCESS:
+        case USER_SUCCESS_LOGGED:
             return {
                 ...state,
                 isLoading: false,
                 error: null,
-            };
-        case USER_SUCCESS:
-            return {
-                ...state,
-                isLoading: false,
-                error: null,
+                isAuthenticated: true,
+                user: payload,
             };
         case LOGOUT_SUCCESS:
+        case USER_SUCCESS_NOT_LOGGED:
             return {
                 ...state,
                 isLoading: false,
                 error: null,
+                isAuthenticated: false,
+                user: null,
             };
         case REGISTER_FAIL:
         case LOGIN_FAIL:
