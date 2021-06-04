@@ -11,14 +11,14 @@ import Login from './pages/Login/Login';
 import NotFound from './pages/NotFound/NotFound';
 import UserSettings from './pages/UserSettings/UserSettings';
 
-import { loadUser } from './store/actions/authActions';
+import { checkAuth } from './store/actions/authActions';
 
-export const App = ({ auth, loadUser }) => {
+export const App = ({ auth, checkAuth }) => {
   useEffect(() => {
     if (!auth.isAuthenticated) {
-      loadUser();
+      checkAuth();
     }
-  }, [auth.isAuthenticated, loadUser]);
+  }, [auth.isAuthenticated, checkAuth]);
 
   return (
     <div className="App">
@@ -43,7 +43,7 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = {
-  loadUser,
+  checkAuth,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

@@ -6,6 +6,8 @@ const Joi = require('joi');
 
 const User = require('../models/User');
 
+const requireAuth = require('../middlewares/requireAuth');
+
 const router = express.Router();
 
 router.use(session({
@@ -30,7 +32,7 @@ const validationSchema = Joi.object().keys({
 
 router.post('/register', function (req, res) {
     const { error } = validationSchema.validate(req.body, { abortEarly: false });
-    if (error) return res.status(422).send(error.message);
+    if (error) return res.status(422).send({ message: error.message });
 
     const { email, password } = req.body;
     const username = email.split('@')[0] + Date.now();
@@ -39,17 +41,24 @@ router.post('/register', function (req, res) {
         .then(user => {
             // registration successful
             req.logIn(user, function (err) {
-                if (user) return res.send();
-                else return res.status(400).send({ message: 'Something went wrong' });
+                if (user) {
+                    const newUser = {
+                        username: user.username,
+                        email: user.email,
+                    }
+                    return res.send({ user: newUser });
+                } else {
+                    return res.status(400).send({ message: 'Something went wrong' });
+                }
             });
         })
-        .catch(error => {
+        .catch(error => {   
             // error occurred when registering
             res.status(422).send(error)
         });
 });
 
-router.post('/login', function (req, res, next) {
+router.post('/login', function (req, res) {
     const { error } = validationSchema.validate(req.body, { abortEarly: false });
     if (error) return res.status(422).send(error.message);
 
@@ -60,7 +69,7 @@ router.post('/login', function (req, res, next) {
                 email: user.email,
             }
             req.logIn(user, function (err) {
-                if (user) return res.send({ user: loggedUser, message: 'User logged in successfully' });
+                if (user) return res.send({ user: loggedUser });
                 else return res.status(400).send({ message: 'Something went wrong' });
             });
         } else if (info) {
@@ -68,28 +77,27 @@ router.post('/login', function (req, res, next) {
         } else {
             return res.status(400).send({ message: 'Something went wrong' });
         }
-    })(req, res, next);
+    })(req, res);
 });
 
 router.post('/logout', function (req, res) {
-    // console.log('logout');
     req.logout();
     res.send();
 });
 
-router.post('/user', function (req, res) {
-    // console.log('isAuthenticated?');
-    // if (req.isAuthenticated()) console.log('yes');
-    // else console.log('no');
-    
-    if (req.user) {
-        const loggedUser = {
-            username: req.user.username,
-            email: req.user.email,
-        }
-        res.send({ user: loggedUser, message: 'User already logged' });
+router.post('/user', requireAuth, function (req, res) {
+    const loggedUser = {
+        username: req.user.username,
+        email: req.user.email,
+    }
+    res.send({ user: loggedUser });
+});
+
+router.post('/check', function (req, res) {
+    if (req.isAuthenticated()) {
+        res.send({ authenticated: true });
     } else {
-        res.send({ user: null, message: 'User not logged' });
+        res.send({ authenticated: false });
     }
 });
 

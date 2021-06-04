@@ -6,7 +6,8 @@ import { useFormik } from 'formik';
 
 import { makeStyles } from '@material-ui/core/styles';
 import {
-    Button, Typography,
+    Button, 
+    Typography,
 } from '@material-ui/core';
 
 import { loadUser } from '../../store/actions/authActions';
@@ -33,11 +34,9 @@ export const UserSettings = ({ auth, loadUser }) => {
 
     const formik = useFormik({
         initialValues: {
-            email: 'email@email.com',
-            password: 'password123',
         },
         onSubmit: (values) => {
-            loadUser(values);
+            loadUser();
         },
     });
 

@@ -71,28 +71,42 @@ export const logOutUser = (history) => async (dispatch) => {
     });
 }
 
-export const loadUser = (formData) => async (dispatch) => {
+export const loadUser = () => async (dispatch) => {
   dispatch({ type: USER_LOADING });
 
-  axios.post('/auth/user', formData)
+  axios.post('/auth/user')
     .then(res => {
-      if (res.data.user) {
-        dispatch({
-          type: USER_SUCCESS_LOGGED,
-          payload: res.data.user,
-        });
+      dispatch({
+        type: USER_SUCCESS_LOGGED,
+        payload: res.data.user,
+      });
+    })
+    .catch(err => {
+      dispatch({
+        type: USER_FAIL,
+        payload: { error: err?.response?.data.message || err.message },
+      });
+    });
+}
+
+export const checkAuth = () => async (dispatch) => {
+  dispatch({ type: USER_LOADING });
+
+  axios.post('/auth/check')
+    .then(res => {
+      if (res.data.authenticated) {
+        dispatch(loadUser());
       } else {
         dispatch({
           type: USER_SUCCESS_NOT_LOGGED,
-          payload: { error: 'user not logged' },
+          payload: { error: 'User not logged' },
         });
       }
     })
     .catch(err => {
-      console.log(err);
       dispatch({
         type: USER_FAIL,
-        payload: { error: 'something went wrong' },
+        payload: { error: err?.response?.data.message || err.message },
       });
     });
 }

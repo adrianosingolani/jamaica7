@@ -51,8 +51,8 @@ mongoose.connect(process.env.MONGOATLAS_URI, mongooseConfig)
 const port = process.env.PORT || 3001;
 
 const httpsOptions = {
-    key: readFileSync(resolve(__dirname, './security/cert.key')),
-    cert: readFileSync(resolve(__dirname, './security/cert.pem')),
+    key: readFileSync(resolve(__dirname, './certificates/cert.key')),
+    cert: readFileSync(resolve(__dirname, './certificates/cert.pem')),
 };
 
 const server = https.createServer(httpsOptions, app).listen(port, () => {
