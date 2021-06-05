@@ -1,5 +1,5 @@
-import React from 'react';
-import { withRouter } from 'react-router'
+import React, { useEffect } from 'react';
+import { withRouter } from 'react-router';
 import { connect } from 'react-redux';
 
 import { Link } from 'react-router-dom';
@@ -8,6 +8,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { AppBar, Toolbar, Typography, Button } from '@material-ui/core/';
 
 import { logOutUser } from '../../store/actions/authActions';
+import { resetAlert } from '../../store/actions/alertActions';
 
 const useStyles = makeStyles((theme) => ({
     title: {
@@ -16,10 +17,15 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export const Header = ({ history, auth, logOutUser }) => {
+export const Header = ({ location, history, auth, logOutUser, resetAlert }) => {
     const logOut = () => {
         logOutUser(history);
     }
+
+    useEffect(() => {
+        resetAlert();
+    }, [location, resetAlert]);
+
 
     const classes = useStyles();
 
@@ -50,6 +56,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {
     logOutUser,
+    resetAlert,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Header));

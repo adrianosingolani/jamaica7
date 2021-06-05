@@ -14,3 +14,8 @@ export const USER_LOADING = 'USER_LOADING';
 export const USER_SUCCESS_LOGGED = 'USER_SUCCESS_LOGGED';
 export const USER_SUCCESS_NOT_LOGGED = 'USER_SUCCESS_NOT_LOGGED';
 export const USER_FAIL = 'USER_FAIL';
+
+export const ALERT_SET = 'ALERT_SET';
+export const ALERT_SHOW = 'ALERT_SHOW';
+export const ALERT_HIDE = 'ALERT_HIDE';
+export const ALERT_RESET = 'ALERT_RESET';

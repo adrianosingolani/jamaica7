@@ -60,7 +60,7 @@ router.post('/register', function (req, res) {
 
 router.post('/login', function (req, res) {
     const { error } = validationSchema.validate(req.body, { abortEarly: false });
-    if (error) return res.status(422).send(error.message);
+    if (error) return res.status(422).send({ message: error.message });
 
     passport.authenticate('local', function (err, user, info) {
         if (user) {

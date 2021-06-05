@@ -58,7 +58,7 @@ export const Login = ({ history, logInUser, auth }) => {
         },
         validationSchema: validationSchema,
         onSubmit: (values) => {
-            logInUser(values, history);
+            logInUser(values);
         },
     });
     return (

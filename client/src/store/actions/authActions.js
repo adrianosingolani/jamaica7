@@ -14,41 +14,59 @@ import {
   USER_SUCCESS_LOGGED,
   USER_SUCCESS_NOT_LOGGED,
   USER_FAIL,
+  ALERT_SET,
+  ALERT_RESET,
 } from '../types';
 
 export const registerUser = (formData, history) => async (dispatch) => {
   dispatch({ type: REGISTER_LOADING });
+  dispatch({ type: ALERT_RESET });
 
   axios.post('/auth/register', formData)
     .then(res => {
       dispatch({
         type: REGISTER_SUCCESS,
-        payload: res.data.user,
+        payload: { user: res.data.user },
       });
       history.push('/login');
     })
     .catch(err => {
       dispatch({
         type: REGISTER_FAIL,
-        payload: { error: err?.response?.data.message || err.message },
+      });
+      dispatch({
+        type: ALERT_SET,
+        payload: { 
+          show: true,
+          text: err?.response?.data.message || err.message,
+          severity: 'error',
+        },
       });
     });
 };
 
-export const logInUser = (formData, history) => async (dispatch) => {
+export const logInUser = (formData) => async (dispatch) => {
   dispatch({ type: LOGIN_LOADING });
+  dispatch({ type: ALERT_RESET });
 
   axios.post('/auth/login', formData)
     .then(res => {
       dispatch({
         type: LOGIN_SUCCESS,
-        payload: res.data.user,
+        payload: { user: res.data.user },
       });
     })
     .catch(err => {
       dispatch({
         type: LOGIN_FAIL,
-        payload: { error: err?.response?.data.message || err.message },
+      });
+      dispatch({
+        type: ALERT_SET,
+        payload: { 
+          show: true,
+          text: err?.response?.data.message || err.message,
+          severity: 'error',
+        },
       });
     });
 };
@@ -66,7 +84,14 @@ export const logOutUser = (history) => async (dispatch) => {
     .catch(err => {
       dispatch({
         type: LOGOUT_FAIL,
-        payload: { error: err?.response?.data.message || err.message },
+      });
+      dispatch({
+        type: ALERT_SET,
+        payload: { 
+          show: true,
+          text: err?.response?.data.message || err.message,
+          severity: 'error',
+        },
       });
     });
 }
@@ -78,13 +103,20 @@ export const loadUser = () => async (dispatch) => {
     .then(res => {
       dispatch({
         type: USER_SUCCESS_LOGGED,
-        payload: res.data.user,
+        payload: { user: res.data.user },
       });
     })
     .catch(err => {
       dispatch({
         type: USER_FAIL,
-        payload: { error: err?.response?.data.message || err.message },
+      });
+      dispatch({
+        type: ALERT_SET,
+        payload: { 
+          show: true,
+          text: err?.response?.data.message || err.message,
+          severity: 'error',
+        },
       });
     });
 }
@@ -99,14 +131,20 @@ export const checkAuth = () => async (dispatch) => {
       } else {
         dispatch({
           type: USER_SUCCESS_NOT_LOGGED,
-          payload: { error: 'User not logged' },
         });
       }
     })
     .catch(err => {
       dispatch({
         type: USER_FAIL,
-        payload: { error: err?.response?.data.message || err.message },
+      });
+      dispatch({
+        type: ALERT_SET,
+        payload: { 
+          show: true,
+          text: err?.response?.data.message || err.message,
+          severity: 'error',
+        },
       });
     });
 }

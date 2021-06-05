@@ -17,7 +17,6 @@ import {
 const initialState = {
     isLoaded: false,
     isLoading: false,
-    error: null,
     isAuthenticated: false,
     user: null,
 };
@@ -31,7 +30,6 @@ export default function authReducer(state = initialState, { type, payload }) {
             return {
                 ...state,
                 isLoading: true,
-                error: null,
             };
         case REGISTER_SUCCESS:
         case LOGIN_SUCCESS:
@@ -40,16 +38,14 @@ export default function authReducer(state = initialState, { type, payload }) {
                 ...state,
                 isLoaded: true,
                 isLoading: false,
-                error: null,
                 isAuthenticated: true,
-                user: payload,
+                user: payload.user,
             };
         case USER_SUCCESS_NOT_LOGGED:
             return {
                 ...state,
                 isLoaded: true,
                 isLoading: false,
-                error: null,
                 isAuthenticated: false,
                 user: null,
             };
@@ -58,7 +54,6 @@ export default function authReducer(state = initialState, { type, payload }) {
                 ...state,
                 isLoaded: false,
                 isLoading: false,
-                error: null,
                 isAuthenticated: false,
                 user: null,
             };
@@ -70,7 +65,6 @@ export default function authReducer(state = initialState, { type, payload }) {
                 ...state,
                 isLoaded: true,
                 isLoading: false,
-                error: payload.error,
             };
         default:
             return state;

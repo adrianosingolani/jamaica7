@@ -31,12 +31,12 @@ const userSchema = mongoose.Schema(
         email_temporary_token: {
             type: String,
             default: null,
-            unique: true,
+            // unique: true,
         },
         password_temporary_token: {
             type: String,
             default: null,
-            unique: true,
+            // unique: true,
         },
     },
     {
@@ -50,6 +50,10 @@ const passportLocalMongooseOptions = {
         // Add additional query parameter - AND condition - active: true
         queryParameters.active = true;
         return model.findOne(queryParameters);
+    },
+    errorMessages: {
+        UserExistsError: 'A user with the given email is already registered',
+        MissingUsernameError: 'No email was given',
     }
 }
 
