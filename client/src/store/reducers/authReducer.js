@@ -8,63 +8,45 @@ import {
     LOGOUT_LOADING,
     LOGOUT_SUCCESS,
     LOGOUT_FAIL,
-    USER_LOADING,
-    USER_SUCCESS_LOGGED,
-    USER_SUCCESS_NOT_LOGGED,
+    AUTH_LOADING,
+    AUTH_SUCCESS,
+    AUTH_FAIL,
     USER_FAIL,
 } from '../types';
 
 const initialState = {
-    isLoaded: false,
-    isLoading: false,
-    isAuthenticated: false,
-    user: null,
+    loading: true,
+    authenticated: false,
 };
 
 export default function authReducer(state = initialState, { type, payload }) {
     switch (type) {
         case REGISTER_LOADING:
         case LOGIN_LOADING:
-        case USER_LOADING:
+        case AUTH_LOADING:
         case LOGOUT_LOADING:
             return {
                 ...state,
-                isLoading: true,
+                loading: true,
             };
         case REGISTER_SUCCESS:
         case LOGIN_SUCCESS:
-        case USER_SUCCESS_LOGGED:
+        case AUTH_SUCCESS:
             return {
                 ...state,
-                isLoaded: true,
-                isLoading: false,
-                isAuthenticated: true,
-                user: payload.user,
-            };
-        case USER_SUCCESS_NOT_LOGGED:
-            return {
-                ...state,
-                isLoaded: true,
-                isLoading: false,
-                isAuthenticated: false,
-                user: null,
-            };
-        case LOGOUT_SUCCESS:
-            return {
-                ...state,
-                isLoaded: false,
-                isLoading: false,
-                isAuthenticated: false,
-                user: null,
+                loading: false,
+                authenticated: true,
             };
         case REGISTER_FAIL:
         case LOGIN_FAIL:
-        case USER_FAIL:
+        case AUTH_FAIL:
         case LOGOUT_FAIL:
+        case LOGOUT_SUCCESS:
+        case USER_FAIL:
             return {
                 ...state,
-                isLoaded: true,
-                isLoading: false,
+                loading: false,
+                authenticated: false,
             };
         default:
             return state;

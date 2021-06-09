@@ -6,11 +6,11 @@ import { useFormik } from 'formik';
 
 import { makeStyles } from '@material-ui/core/styles';
 import {
-    Button, 
+    Button,
     Typography,
 } from '@material-ui/core';
 
-import { loadUser } from '../../store/actions/authActions';
+import { loadUser } from '../../store/actions/userActions';
 
 import PageContainer from '../../components/PageContainer/PageContainer';
 import AuthLoader from '../../components/AuthLoader/AuthLoader';
@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export const UserSettings = ({ auth, loadUser }) => {
+export const UserSettings = ({ auth, user, loadUser }) => {
     const classes = useStyles();
 
     const formik = useFormik({
@@ -51,17 +51,22 @@ export const UserSettings = ({ auth, loadUser }) => {
                     className={classes.submit}
                 >Load User</Button>
             </form>
-            <AuthLoader isAuthenticatedCondition={true}>
-                <Typography component="pre">
-                    user: {JSON.stringify(auth.user, null, '\t')}
-                </Typography>
-            </AuthLoader>
+            { user.user ? (
+                <AuthLoader>
+                    <Typography component="pre">
+                        user: {JSON.stringify(user.user, null, '\t')}
+                    </Typography>
+                </AuthLoader>
+            ) : (
+                <React.Fragment />
+            )}
         </PageContainer>
     )
 }
 
 const mapStateToProps = (state) => ({
     auth: state.auth,
+    user: state.user
 });
 
 const mapDispatchToProps = {

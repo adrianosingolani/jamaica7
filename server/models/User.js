@@ -30,13 +30,11 @@ const userSchema = mongoose.Schema(
         },
         email_temporary_token: {
             type: String,
-            default: null,
-            // unique: true,
+            unique: true,
         },
         password_temporary_token: {
             type: String,
-            default: null,
-            // unique: true,
+            unique: true,
         },
     },
     {

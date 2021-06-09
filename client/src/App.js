@@ -15,10 +15,10 @@ import { checkAuth } from './store/actions/authActions';
 
 export const App = ({ auth, checkAuth }) => {
   useEffect(() => {
-    if (!auth.isAuthenticated) {
+    if (!auth.authenticated) {
       checkAuth();
     }
-  }, [auth.isAuthenticated, checkAuth]);
+  }, [auth.authenticated, checkAuth]);
 
   return (
     <div className="App">

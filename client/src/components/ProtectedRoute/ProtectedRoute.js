@@ -7,10 +7,10 @@ import Login from '../../pages/Login/Login';
 import { CircularProgress } from '@material-ui/core/';
 
 export const ProtectedRoute = (props) => {
-    const { auth } = props;
+    const { auth, user } = props;
 
-    if (auth.isLoaded) {
-        if (auth.isAuthenticated) { 
+    if (!auth.loading || !user.loading) {
+        if (auth.authenticated) { 
             return <Route {...props}></Route>
         } else {
             return <Login />
@@ -22,7 +22,8 @@ export const ProtectedRoute = (props) => {
 }
 
 const mapStateToProps = (state) => ({
-    auth: state.auth
+    auth: state.auth,
+    user: state.user,
 })
 
 const mapDispatchToProps = {

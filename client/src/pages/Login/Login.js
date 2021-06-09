@@ -43,11 +43,11 @@ export const Login = ({ history, logInUser, auth }) => {
     const location = useLocation();
 
     useEffect(() => {
-        if (auth.isAuthenticated) {
+        if (auth.authenticated) {
             if (location.pathname === '/login') history.push('/usersettings');
             else history.push(location.pathname);
         }
-    }, [auth.isAuthenticated, history, location.pathname]);
+    }, [auth.authenticated, history, location.pathname]);
 
     const classes = useStyles();
 
@@ -62,7 +62,7 @@ export const Login = ({ history, logInUser, auth }) => {
         },
     });
     return (
-        <AuthLoader isAuthenticatedCondition={false}>
+        <AuthLoader>
             <PageContainer title="Login">
                 <form className={classes.form} noValidate onSubmit={formik.handleSubmit}>
                     <TextField

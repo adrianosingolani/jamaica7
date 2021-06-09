@@ -4,14 +4,10 @@ const router = express.Router();
 router.use(express.urlencoded({ extended: true }));
 router.use(express.json());
 
-const localAuthRoutes = require('./localAuth');
-// const apiRoutes = require('./api');
+const authRoutes = require('./authRoutes');
+const userRoutes = require('./userRoutes');
 
-router.use('/auth', localAuthRoutes);
-
-// router.post('/auth', localAuthRoutes);
-// router.post('/api', apiRoutes);
-// fallback 404
-// router.post('/api', (req, res) => res.status(404).json('No route for this path'));
+router.use('/auth', authRoutes);
+router.use('/user', userRoutes);
 
 module.exports = router;

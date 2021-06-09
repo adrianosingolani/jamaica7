@@ -40,10 +40,10 @@ const useStyles = makeStyles((theme) => ({
 
 export const Register = ({ history, auth, registerUser }) => {
     useEffect(() => {
-        if (auth.isAuthenticated) {
+        if (auth.authenticated) {
             history.push('/usersettings');
         }
-    }, [auth.isAuthenticated, history]);
+    }, [auth.authenticated, history]);
 
     const classes = useStyles();
 
@@ -59,7 +59,7 @@ export const Register = ({ history, auth, registerUser }) => {
     });
 
     return (
-        <AuthLoader isAuthenticatedCondition={false}>
+        <AuthLoader>
             <PageContainer title="Register">
                 <form className={classes.form} noValidate onSubmit={formik.handleSubmit} >
                     <TextField

@@ -1,29 +1,12 @@
 const dotenv = require('dotenv').config();
 const express = require('express');
-const session = require('express-session');
 const passport = require('passport');
 const Joi = require('joi');
+const jwt = require('jsonwebtoken');
 
 const User = require('../models/User');
 
-const requireAuth = require('../middlewares/requireAuth');
-
 const router = express.Router();
-
-router.use(session({
-    secret: process.env.SESSION_SECRET,
-    resave: false,
-    saveUninitialized: false,
-    cookie: { secure: true }
-}));
-
-router.use(passport.initialize());
-router.use(passport.session());
-
-passport.use(User.createStrategy());
-
-passport.serializeUser(User.serializeUser());
-passport.deserializeUser(User.deserializeUser());
 
 const validationSchema = Joi.object().keys({
     email: Joi.string().label('Email').email().required(),
@@ -37,7 +20,10 @@ router.post('/register', function (req, res) {
     const { email, password } = req.body;
     const username = email.split('@')[0] + Date.now();
 
-    User.register({ email, username }, password)
+    const email_temporary_token = jwt.sign({ email: email, type: 'email' }, process.env.JWT_SECRET, { expiresIn: '24h' });
+    const password_temporary_token = jwt.sign({ email: email, type: 'password' }, process.env.JWT_SECRET, { expiresIn: '1s' });
+
+    User.register({ email, username, email_temporary_token, password_temporary_token }, password)
         .then(user => {
             // registration successful
             req.logIn(user, function (err) {
@@ -64,13 +50,16 @@ router.post('/login', function (req, res) {
 
     passport.authenticate('local', function (err, user, info) {
         if (user) {
-            const loggedUser = {
-                username: user.username,
-                email: user.email,
-            }
             req.logIn(user, function (err) {
-                if (user) return res.send({ user: loggedUser });
-                else return res.status(400).send({ message: 'Something went wrong' });
+                if (user) {
+                    const loggedUser = {
+                        email: user.email,
+                        username: user.username,
+                    }
+                    return res.send({ user: loggedUser });
+                } else { 
+                    return res.status(400).send({ message: 'Something went wrong' });
+                }
             });
         } else if (info) {
             return res.status(400).send({ message: info.message });
@@ -83,14 +72,6 @@ router.post('/login', function (req, res) {
 router.post('/logout', function (req, res) {
     req.logout();
     res.send();
-});
-
-router.post('/user', requireAuth, function (req, res) {
-    const loggedUser = {
-        username: req.user.username,
-        email: req.user.email,
-    }
-    res.send({ user: loggedUser });
 });
 
 router.post('/check', function (req, res) {

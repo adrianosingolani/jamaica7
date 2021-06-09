@@ -10,10 +10,9 @@ import {
   LOGOUT_LOADING,
   LOGOUT_SUCCESS,
   LOGOUT_FAIL,
-  USER_LOADING,
-  USER_SUCCESS_LOGGED,
-  USER_SUCCESS_NOT_LOGGED,
-  USER_FAIL,
+  AUTH_LOADING,
+  AUTH_SUCCESS,
+  AUTH_FAIL,
   ALERT_SET,
   ALERT_RESET,
 } from '../types';
@@ -26,7 +25,7 @@ export const registerUser = (formData, history) => async (dispatch) => {
     .then(res => {
       dispatch({
         type: REGISTER_SUCCESS,
-        payload: { user: res.data.user },
+        payload: res.data
       });
       history.push('/login');
     })
@@ -36,7 +35,7 @@ export const registerUser = (formData, history) => async (dispatch) => {
       });
       dispatch({
         type: ALERT_SET,
-        payload: { 
+        payload: {
           show: true,
           text: err?.response?.data.message || err.message,
           severity: 'error',
@@ -51,9 +50,10 @@ export const logInUser = (formData) => async (dispatch) => {
 
   axios.post('/auth/login', formData)
     .then(res => {
+      console.log(res.data.user);
       dispatch({
         type: LOGIN_SUCCESS,
-        payload: { user: res.data.user },
+        payload: res.data,
       });
     })
     .catch(err => {
@@ -62,7 +62,7 @@ export const logInUser = (formData) => async (dispatch) => {
       });
       dispatch({
         type: ALERT_SET,
-        payload: { 
+        payload: {
           show: true,
           text: err?.response?.data.message || err.message,
           severity: 'error',
@@ -87,32 +87,7 @@ export const logOutUser = (history) => async (dispatch) => {
       });
       dispatch({
         type: ALERT_SET,
-        payload: { 
-          show: true,
-          text: err?.response?.data.message || err.message,
-          severity: 'error',
-        },
-      });
-    });
-}
-
-export const loadUser = () => async (dispatch) => {
-  dispatch({ type: USER_LOADING });
-
-  axios.post('/auth/user')
-    .then(res => {
-      dispatch({
-        type: USER_SUCCESS_LOGGED,
-        payload: { user: res.data.user },
-      });
-    })
-    .catch(err => {
-      dispatch({
-        type: USER_FAIL,
-      });
-      dispatch({
-        type: ALERT_SET,
-        payload: { 
+        payload: {
           show: true,
           text: err?.response?.data.message || err.message,
           severity: 'error',
@@ -122,25 +97,27 @@ export const loadUser = () => async (dispatch) => {
 }
 
 export const checkAuth = () => async (dispatch) => {
-  dispatch({ type: USER_LOADING });
+  dispatch({ type: AUTH_LOADING });
 
-  axios.post('/auth/check')
+  axios.post('/auth/check', { withCredentials: true })
     .then(res => {
       if (res.data.authenticated) {
-        dispatch(loadUser());
+        dispatch({
+          type: AUTH_SUCCESS,
+        });
       } else {
         dispatch({
-          type: USER_SUCCESS_NOT_LOGGED,
+          type: AUTH_FAIL,
         });
       }
     })
     .catch(err => {
       dispatch({
-        type: USER_FAIL,
+        type: AUTH_FAIL,
       });
       dispatch({
         type: ALERT_SET,
-        payload: { 
+        payload: {
           show: true,
           text: err?.response?.data.message || err.message,
           severity: 'error',

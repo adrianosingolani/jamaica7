@@ -12,24 +12,26 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export const AuthLoader = ({ auth, children, isAuthenticatedCondition }) => {
+export const AuthLoader = ({ auth, user, children }) => {
     const classes = useStyles();
 
-    return (
-        <React.Fragment>
-            {auth.isLoaded && !auth.isLoading && auth.isAuthenticated === isAuthenticatedCondition ? (
-                <React.Fragment>{children}</React.Fragment>
-            ) : (
-                <Box className={classes.box}>
-                    <CircularProgress />
-                </Box>
-            )}
-        </React.Fragment>
-    )
+
+    if (!user.loading && !auth.loading) {
+        return (
+            <React.Fragment>{children}</React.Fragment>
+        );
+    } else {
+        return (
+            <Box className={classes.box}>
+                <CircularProgress />
+            </Box>
+        );
+    }
 }
 
 const mapStateToProps = (state) => ({
     auth: state.auth,
+    user: state.user,
 })
 
 const mapDispatchToProps = {
