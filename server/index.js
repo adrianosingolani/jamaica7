@@ -20,7 +20,8 @@ const User = require('./models/User');
 const mongooseConfig = {
     useNewUrlParser: true,
     useUnifiedTopology: true,
-    useCreateIndex: true
+    useCreateIndex: true,
+    useFindAndModify: false,
 };
 mongoose.connect(process.env.MONGOATLAS_URI, mongooseConfig)
     .then(connection_obj => {

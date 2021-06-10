@@ -55,6 +55,13 @@ const passportLocalMongooseOptions = {
     }
 }
 
+userSchema.statics.randomUsername = async function(user) {
+    
+    const newUsername = user.email.split('@')[0] + Date.now();
+    
+    return this.findByIdAndUpdate(user._id, { username: newUsername }, { new: true });
+}
+
 userSchema.plugin(passportLocalMongoose, passportLocalMongooseOptions);
 
 const User = mongoose.model('User', userSchema);

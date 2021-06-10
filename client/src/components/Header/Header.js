@@ -26,7 +26,6 @@ export const Header = ({ location, history, auth, logOutUser, resetAlert }) => {
         resetAlert();
     }, [location, resetAlert]);
 
-
     const classes = useStyles();
 
     return (

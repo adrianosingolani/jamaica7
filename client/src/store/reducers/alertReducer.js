@@ -9,6 +9,7 @@ const initialState = {
     show: false,
     text: null,
     severity: null,
+    code: null,
 };
 
 export default function authReducer(state = initialState, { type, payload }) {
@@ -33,6 +34,7 @@ export default function authReducer(state = initialState, { type, payload }) {
                 show: false,
                 text: null,
                 severity: null,
+                code: null,
             };
         default:
             return state;

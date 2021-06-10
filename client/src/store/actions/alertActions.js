@@ -12,6 +12,7 @@ export const setAlert = (alertData) => async (dispatch) => {
       show: alertData.show,
       text: alertData.text,
       severity: alertData.severity,
+      code: alertData.code,
     }
   });
 };

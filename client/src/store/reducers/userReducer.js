@@ -9,7 +9,7 @@ import {
 
 const initialState = {
     loading: false,
-    user: null,
+    data: null,
 };
 
 export default function authReducer(state = initialState, { type, payload }) {
@@ -23,7 +23,7 @@ export default function authReducer(state = initialState, { type, payload }) {
             return {
                 ...state,
                 loading: false,
-                user: payload.user,
+                data: payload.user,
             };
         case USER_FAIL:
         case USER_RESET:
@@ -32,7 +32,7 @@ export default function authReducer(state = initialState, { type, payload }) {
             return {
                 ...state,
                 loading: false,
-                user: null,
+                data: null,
             };
         default:
             return state;

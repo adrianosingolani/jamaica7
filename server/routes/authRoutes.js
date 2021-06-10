@@ -20,7 +20,7 @@ router.post('/register', function (req, res) {
     const { email, password } = req.body;
     const username = email.split('@')[0] + Date.now();
 
-    const email_temporary_token = jwt.sign({ email: email, type: 'email' }, process.env.JWT_SECRET, { expiresIn: '24h' });
+    const email_temporary_token = jwt.sign({ email: email, type: 'email' }, process.env.JWT_SECRET, { expiresIn: '7d' });
     const password_temporary_token = jwt.sign({ email: email, type: 'password' }, process.env.JWT_SECRET, { expiresIn: '1s' });
 
     User.register({ email, username, email_temporary_token, password_temporary_token }, password)

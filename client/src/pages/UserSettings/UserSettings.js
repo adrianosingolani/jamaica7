@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 
 import { useFormik } from 'formik';
@@ -10,7 +10,7 @@ import {
     Typography,
 } from '@material-ui/core';
 
-import { loadUser } from '../../store/actions/userActions';
+import { loadUser, loadUserWithToken, setRandomUsername } from '../../store/actions/userActions';
 
 import PageContainer from '../../components/PageContainer/PageContainer';
 import AuthLoader from '../../components/AuthLoader/AuthLoader';
@@ -29,7 +29,11 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export const UserSettings = ({ auth, user, loadUser }) => {
+export const UserSettings = ({ user, loadUser, loadUserWithToken, setRandomUsername }) => {
+    useEffect(() => {
+        loadUser();
+    }, [loadUser]);
+
     const classes = useStyles();
 
     const formik = useFormik({
@@ -42,6 +46,22 @@ export const UserSettings = ({ auth, user, loadUser }) => {
 
     return (
         <PageContainer title="User Settings">
+            <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                color="primary"
+                className={classes.submit}
+                onClick={() => { setRandomUsername(); }}
+            >Set Random Username</Button>
+            <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                color="primary"
+                className={classes.submit}
+                onClick={() => { loadUserWithToken(); }}
+            >Load User With Token</Button>
             <form className={classes.form} noValidate onSubmit={formik.handleSubmit}>
                 <Button
                     type="submit"
@@ -51,10 +71,10 @@ export const UserSettings = ({ auth, user, loadUser }) => {
                     className={classes.submit}
                 >Load User</Button>
             </form>
-            { user.user ? (
+            { user.data ? (
                 <AuthLoader>
                     <Typography component="pre">
-                        user: {JSON.stringify(user.user, null, '\t')}
+                        user: {JSON.stringify(user.data, null, '\t')}
                     </Typography>
                 </AuthLoader>
             ) : (
@@ -65,12 +85,13 @@ export const UserSettings = ({ auth, user, loadUser }) => {
 }
 
 const mapStateToProps = (state) => ({
-    auth: state.auth,
     user: state.user
 });
 
 const mapDispatchToProps = {
     loadUser,
+    loadUserWithToken,
+    setRandomUsername,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(UserSettings)
+export default connect(mapStateToProps, mapDispatchToProps)(UserSettings);

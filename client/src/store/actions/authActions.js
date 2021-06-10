@@ -17,6 +17,8 @@ import {
   ALERT_RESET,
 } from '../types';
 
+// import { loadUser } from './userActions';
+
 export const registerUser = (formData, history) => async (dispatch) => {
   dispatch({ type: REGISTER_LOADING });
   dispatch({ type: ALERT_RESET });
@@ -39,6 +41,7 @@ export const registerUser = (formData, history) => async (dispatch) => {
           show: true,
           text: err?.response?.data.message || err.message,
           severity: 'error',
+          code: 'registerfail'
         },
       });
     });
@@ -50,7 +53,8 @@ export const logInUser = (formData) => async (dispatch) => {
 
   axios.post('/auth/login', formData)
     .then(res => {
-      console.log(res.data.user);
+      // dispatch(loadUser());
+
       dispatch({
         type: LOGIN_SUCCESS,
         payload: res.data,
@@ -66,6 +70,7 @@ export const logInUser = (formData) => async (dispatch) => {
           show: true,
           text: err?.response?.data.message || err.message,
           severity: 'error',
+          code: 'loginfail'
         },
       });
     });
@@ -91,6 +96,7 @@ export const logOutUser = (history) => async (dispatch) => {
           show: true,
           text: err?.response?.data.message || err.message,
           severity: 'error',
+          code: 'logoutfail'
         },
       });
     });
@@ -121,6 +127,7 @@ export const checkAuth = () => async (dispatch) => {
           show: true,
           text: err?.response?.data.message || err.message,
           severity: 'error',
+          code: 'authfail'
         },
       });
     });
