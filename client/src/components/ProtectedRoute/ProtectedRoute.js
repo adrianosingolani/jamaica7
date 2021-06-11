@@ -20,6 +20,10 @@ export const ProtectedRoute = (props) => {
                     show: true,
                     text: 'Please click on the link sent to your email address to confirm it.',
                     severity: 'warning',
+                    button: {
+                        to: '#',
+                        label: 'send again',
+                    },
                     code: 'emailnotconfirmed'
                 });
             } else if (alert.code === 'emailnotconfirmed') {

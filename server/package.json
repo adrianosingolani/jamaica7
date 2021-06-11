@@ -14,6 +14,7 @@
   "author": "Adriano Singolani",
   "license": "ISC",
   "dependencies": {
+    "@sendgrid/mail": "^7.4.4",
     "concurrently": "^6.0.0",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",

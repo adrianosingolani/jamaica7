@@ -12,6 +12,10 @@ export const setAlert = (alertData) => async (dispatch) => {
       show: alertData.show,
       text: alertData.text,
       severity: alertData.severity,
+      button: {
+        to: alertData.button?.to ? alertData.button.to : null,
+        label: alertData.button?.label ? alertData.button.label : null,
+      },
       code: alertData.code,
     }
   });
