@@ -63,7 +63,7 @@ export const Login = ({ history, logInUser, auth }) => {
     });
     return (
         <AuthLoader>
-            <PageContainer title="Login">
+            <PageContainer title="Login" maxWidth="xs">
                 <form className={classes.form} noValidate onSubmit={formik.handleSubmit}>
                     <TextField
                         variant="outlined"

@@ -13,10 +13,9 @@ export const setAlert = (alertData) => async (dispatch) => {
       text: alertData.text,
       severity: alertData.severity,
       button: {
-        to: alertData.button?.to ? alertData.button.to : null,
+        onClick: alertData.button?.onClick ? alertData.button.onClick : null,
         label: alertData.button?.label ? alertData.button.label : null,
       },
-      code: alertData.code,
     }
   });
 };

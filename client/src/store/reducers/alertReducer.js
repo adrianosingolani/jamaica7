@@ -10,17 +10,15 @@ const initialState = {
     text: null,
     severity: null,
     button: {
-        to: null,
+        onClick: null,
         label: null,
     },
-    code: null,
 };
 
 export default function authReducer(state = initialState, { type, payload }) {
     switch (type) {
         case ALERT_SET:
             return {
-                ...state,
                 ...payload,
             };
         case ALERT_SHOW:
@@ -38,7 +36,10 @@ export default function authReducer(state = initialState, { type, payload }) {
                 show: false,
                 text: null,
                 severity: null,
-                code: null,
+                button: {
+                    onClick: null,
+                    label: null,
+                },
             };
         default:
             return state;

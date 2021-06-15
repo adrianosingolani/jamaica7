@@ -3,6 +3,9 @@ const express = require('express');
 const passport = require('passport');
 const Joi = require('joi');
 const jwt = require('jsonwebtoken');
+const sendgrid = require('@sendgrid/mail');
+
+sendgrid.setApiKey(process.env.SENDGRID_API_KEY);
 
 const User = require('../models/User');
 
@@ -26,6 +29,29 @@ router.post('/register', function (req, res) {
     User.register({ email, username, email_temporary_token, password_temporary_token }, password)
         .then(user => {
             // registration successful
+
+            const link = `${process.env.APP_URL}/confirmemail/${email_temporary_token}`;
+
+            const welcomeEmail = {
+                to: user.email,
+                from: {
+                    name: process.env.SENDGRID_FROM_NAME,
+                    email: process.env.SENDGRID_FROM_EMAIL,
+                },
+                subject: 'Welcome to MERN Boilerplate',
+                text: `Thank you for registering!\n\nPlease click or copy and paste the following link on your browser for confirming your email address:\n${link}`,
+                html: `<p>Thank you for registering!</p><p>Please click on the following link for confirming your email address:<br /><a href="${link}">${link}</a></p>`,
+            };
+
+            sendgrid.send(welcomeEmail)
+                .then(() => { }, error => {
+                    console.error(error);
+
+                    if (error.response) {
+                        console.error(error.response.body)
+                    }
+                });
+
             req.logIn(user, function (err) {
                 if (user) {
                     const newUser = {
@@ -38,7 +64,7 @@ router.post('/register', function (req, res) {
                 }
             });
         })
-        .catch(error => {   
+        .catch(error => {
             // error occurred when registering
             res.status(422).send(error)
         });
@@ -57,7 +83,7 @@ router.post('/login', function (req, res) {
                         username: user.username,
                     }
                     return res.send({ user: loggedUser });
-                } else { 
+                } else {
                     return res.status(400).send({ message: 'Something went wrong' });
                 }
             });

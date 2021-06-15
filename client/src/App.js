@@ -10,6 +10,8 @@ import Register from './pages/Register/Register';
 import Login from './pages/Login/Login';
 import NotFound from './pages/NotFound/NotFound';
 import UserSettings from './pages/UserSettings/UserSettings';
+import ConfirmEmail from './pages/ConfirmEmail/ConfirmEmail';
+
 
 import { checkAuth } from './store/actions/authActions';
 
@@ -30,6 +32,7 @@ export const App = ({ auth, checkAuth }) => {
               <Route path="/notfound" component={NotFound} />
               <ProtectedRoute path="/usersettings" component={UserSettings} />
               <Route exact path="/" component={Home} />
+              <Route exact path="/confirmemail/:token" component={ConfirmEmail} />
               <Route component={NotFound} />
             </Switch>
         </Layout>

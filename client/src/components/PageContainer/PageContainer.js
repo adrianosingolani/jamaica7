@@ -6,25 +6,28 @@ import {
     Container,
     CssBaseline,
     Typography,
+    Box
 } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
-    paper: {
+    box: {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
     },
 }));
 
-export const PageContainer = ({title, children}) => {
+export const PageContainer = (props) => {
+    const {title, children} = props;
+    
     const classes = useStyles();
 
     return (
-        <Container component="main" maxWidth="xs">
+        <Container component="main" {...props}>
             <CssBaseline />
-            <div className={classes.paper}>
-                <Typography component="h1" variant="h5">{ title }</Typography>
-            </div>
+            <Box className={classes.box}>
+                <Typography variant="h5">{ title }</Typography>
+            </Box>
             { children }
             </Container>
     )

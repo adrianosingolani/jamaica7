@@ -41,7 +41,6 @@ export const registerUser = (formData, history) => async (dispatch) => {
           show: true,
           text: err?.response?.data.message || err.message,
           severity: 'error',
-          code: 'registerfail'
         },
       });
     });
@@ -70,7 +69,6 @@ export const logInUser = (formData) => async (dispatch) => {
           show: true,
           text: err?.response?.data.message || err.message,
           severity: 'error',
-          code: 'loginfail'
         },
       });
     });
@@ -96,7 +94,6 @@ export const logOutUser = (history) => async (dispatch) => {
           show: true,
           text: err?.response?.data.message || err.message,
           severity: 'error',
-          code: 'logoutfail'
         },
       });
     });
@@ -127,7 +124,6 @@ export const checkAuth = () => async (dispatch) => {
           show: true,
           text: err?.response?.data.message || err.message,
           severity: 'error',
-          code: 'authfail'
         },
       });
     });

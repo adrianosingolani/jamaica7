@@ -4,34 +4,27 @@ import { Route } from 'react-router-dom';
 
 import { CircularProgress } from '@material-ui/core/';
 
-import { setAlert, resetAlert } from '../../store/actions/alertActions';
+import { setAlert } from '../../store/actions/alertActions';
+import { sendConfirmationEmail } from '../../store/actions/emailActions';
 
 import Login from '../../pages/Login/Login';
 
 export const ProtectedRoute = (props) => {
-    const { auth, user, alert, setAlert, resetAlert } = props;
+    const { auth, user, setAlert, sendConfirmationEmail } = props;
 
     useEffect(() => {
-        if (user.data) {
-            const userData = user.data;
-
-            if (!userData.email_confirmed) {
-                setAlert({
-                    show: true,
-                    text: 'Please click on the link sent to your email address to confirm it.',
-                    severity: 'warning',
-                    button: {
-                        to: '#',
-                        label: 'send again',
-                    },
-                    code: 'emailnotconfirmed'
-                });
-            } else if (alert.code === 'emailnotconfirmed') {
-                resetAlert();
-            }
+        if (user?.data && !user.data?.email_confirmed) {
+            setAlert({
+                show: true,
+                text: 'Please click on the link sent to your email address to confirm it.',
+                severity: 'warning',
+                button: {
+                    onClick: () => sendConfirmationEmail(),
+                    label: 'send again',
+                },
+            });
         }
-
-    }, [user?.data, alert.code, setAlert, resetAlert]);
+    }, [user?.data, user.data?.email_confirmed, setAlert, sendConfirmationEmail]);
 
     if (!auth.loading || !user.loading) {
         if (auth.authenticated) {
@@ -47,12 +40,12 @@ export const ProtectedRoute = (props) => {
 const mapStateToProps = (state) => ({
     auth: state.auth,
     user: state.user,
-    alert: state.alert,
+    email: state.email,
 })
 
 const mapDispatchToProps = {
     setAlert,
-    resetAlert,
+    sendConfirmationEmail
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProtectedRoute);

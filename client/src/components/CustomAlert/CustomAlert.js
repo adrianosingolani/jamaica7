@@ -1,6 +1,5 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 
 import { makeStyles } from '@material-ui/core/styles';
 import { Alert } from '@material-ui/lab';
@@ -27,8 +26,8 @@ const CustomAlert = ({ alert }) => {
       <React.Fragment>
         <Alert className={classes.alert} severity={alert.severity}>
           {alert.text}
-          { alert.button?.to && alert.button?.label ? (
-            <Button className={classes.button} size="small" component={Link} to={alert.button.to}>{alert.button.label}</Button>
+          { alert.button?.onClick && alert.button?.label ? (
+            <Button className={classes.button} size="small" onClick={alert.button.onClick}>{alert.button.label}</Button>
           ) : (
             <React.Fragment />
           )}

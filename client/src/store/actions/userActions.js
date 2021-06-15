@@ -27,7 +27,6 @@ export const loadUser = () => async (dispatch) => {
           show: true,
           text: err?.response?.data.message || err.message,
           severity: 'error',
-          code: 'userfail'
         },
       });
     });
@@ -53,7 +52,6 @@ export const loadUserWithToken = () => async (dispatch) => {
           show: true,
           text: err?.response?.data.message || err.message,
           severity: 'error',
-          code: 'userfail'
         },
       });
     });
@@ -79,7 +77,6 @@ export const setRandomUsername = () => async (dispatch) => {
           show: true,
           text: err?.response?.data.message || err.message,
           severity: 'error',
-          code: 'userfail'
         },
       });
     });

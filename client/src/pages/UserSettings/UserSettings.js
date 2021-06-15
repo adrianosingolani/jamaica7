@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
         alignItems: 'center',
     },
     form: {
-        marginTop: theme.spacing(1),
+        marginTop: theme.spacing(0),
     },
     submit: {
         margin: theme.spacing(1, 0, 2),
@@ -45,7 +45,7 @@ export const UserSettings = ({ user, loadUser, loadUserWithToken, setRandomUsern
     });
 
     return (
-        <PageContainer title="User Settings">
+        <PageContainer title="User Settings" maxWidth="xs">
             <Button
                 type="submit"
                 fullWidth

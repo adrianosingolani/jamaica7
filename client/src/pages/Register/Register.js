@@ -60,7 +60,7 @@ export const Register = ({ history, auth, registerUser }) => {
 
     return (
         <AuthLoader>
-            <PageContainer title="Register">
+            <PageContainer title="Register" maxWidth="xs">
                 <form className={classes.form} noValidate onSubmit={formik.handleSubmit} >
                     <TextField
                         variant="outlined"
