@@ -55,11 +55,14 @@ const passportLocalMongooseOptions = {
     }
 }
 
-userSchema.statics.randomUsername = async function(user) {
+userSchema.statics.returnUserToClient = function(user) {
+    const clientUser = {
+        username: user.username,
+        email: user.email,
+        email_confirmed: user.email_confirmed,
+    }
     
-    const newUsername = user.email.split('@')[0] + Date.now();
-    
-    return this.findByIdAndUpdate(user._id, { username: newUsername }, { new: true });
+    return clientUser;
 }
 
 userSchema.plugin(passportLocalMongoose, passportLocalMongooseOptions);

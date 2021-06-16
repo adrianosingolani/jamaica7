@@ -32,39 +32,23 @@ export const loadUser = () => async (dispatch) => {
     });
 }
 
-export const loadUserWithToken = () => async (dispatch) => {
+export const updateUser = (formData) => async (dispatch) => {
   dispatch({ type: USER_LOADING });
 
-  axios.post('/user/loadwithtoken', { withCredentials: true })
+  axios.patch('/user/update', formData, { withCredentials: true })
     .then(res => {
       dispatch({
         type: USER_SUCCESS,
         payload: res.data,
-      });
-    })
-    .catch(err => {
-      dispatch({
-        type: USER_FAIL,
       });
       dispatch({
         type: ALERT_SET,
         payload: { 
           show: true,
-          text: err?.response?.data.message || err.message,
-          severity: 'error',
+          text: 'Saved',
+          severity: 'success',
+          timeout: 3000,
         },
-      });
-    });
-}
-
-export const setRandomUsername = () => async (dispatch) => {
-  dispatch({ type: USER_LOADING });
-
-  axios.post('/user/randomusername', { withCredentials: true })
-    .then(res => {
-      dispatch({
-        type: USER_SUCCESS,
-        payload: res.data,
       });
     })
     .catch(err => {

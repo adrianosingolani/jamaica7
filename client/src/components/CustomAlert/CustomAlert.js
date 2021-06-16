@@ -5,6 +5,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Alert } from '@material-ui/lab';
 import { Button } from '@material-ui/core';
 
+import { hideAlert } from '../../store/actions/alertActions';
+
 const useStyles = makeStyles((theme) => ({
   alert: {
     display: 'flex',
@@ -18,21 +20,24 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const CustomAlert = ({ alert }) => {
+const CustomAlert = ({ alert, hideAlert }) => {
   const classes = useStyles();
 
   if (alert.show && alert.text && alert.severity) {
+    if (alert.timeout > 0) {
+      setTimeout(() => {
+        hideAlert();
+      }, alert.timeout);
+    }
     return (
-      <React.Fragment>
-        <Alert className={classes.alert} severity={alert.severity}>
-          {alert.text}
-          { alert.button?.onClick && alert.button?.label ? (
-            <Button className={classes.button} size="small" onClick={alert.button.onClick}>{alert.button.label}</Button>
-          ) : (
-            <React.Fragment />
-          )}
-        </Alert>
-      </React.Fragment>
+      <Alert className={classes.alert} severity={alert.severity}>
+        {alert.text}
+        {alert.button?.onClick && alert.button?.label ? (
+          <Button className={classes.button} size="small" onClick={alert.button.onClick}>{alert.button.label}</Button>
+        ) : (
+          <React.Fragment />
+        )}
+      </Alert>
     );
   } else {
     return (<React.Fragment />)
@@ -44,7 +49,7 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = {
-
+  hideAlert,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CustomAlert)

@@ -12,6 +12,7 @@ export const setAlert = (alertData) => async (dispatch) => {
       show: alertData.show,
       text: alertData.text,
       severity: alertData.severity,
+      timeout: alertData.timeout,
       button: {
         onClick: alertData.button?.onClick ? alertData.button.onClick : null,
         label: alertData.button?.label ? alertData.button.label : null,

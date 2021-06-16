@@ -54,10 +54,8 @@ router.post('/register', function (req, res) {
 
             req.logIn(user, function (err) {
                 if (user) {
-                    const newUser = {
-                        username: user.username,
-                        email: user.email,
-                    }
+                    const newUser = User.returnUserToClient(user);
+
                     return res.send({ user: newUser });
                 } else {
                     return res.status(400).send({ message: 'Something went wrong' });
@@ -78,10 +76,8 @@ router.post('/login', function (req, res) {
         if (user) {
             req.logIn(user, function (err) {
                 if (user) {
-                    const loggedUser = {
-                        email: user.email,
-                        username: user.username,
-                    }
+                    const loggedUser = User.returnUserToClient(user);
+                    
                     return res.send({ user: loggedUser });
                 } else {
                     return res.status(400).send({ message: 'Something went wrong' });

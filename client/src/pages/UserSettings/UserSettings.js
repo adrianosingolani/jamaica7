@@ -2,18 +2,28 @@ import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 
 import { useFormik } from 'formik';
-// import * as yup from 'yup';
+import * as yup from 'yup';
 
 import { makeStyles } from '@material-ui/core/styles';
 import {
     Button,
-    Typography,
+    TextField
 } from '@material-ui/core';
 
-import { loadUser, loadUserWithToken, setRandomUsername } from '../../store/actions/userActions';
+import { loadUser, updateUser } from '../../store/actions/userActions';
 
 import PageContainer from '../../components/PageContainer/PageContainer';
-import AuthLoader from '../../components/AuthLoader/AuthLoader';
+
+const validationSchema = yup.object({
+    username: yup
+        .string('Enter your username')
+        .min(8, 'Username should be of minimum 8 characters length')
+        .required('Username is required'),
+    email: yup
+        .string('Enter your email')
+        .email('Enter a valid email')
+        .required('Email is required'),
+});
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -29,58 +39,75 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export const UserSettings = ({ user, loadUser, loadUserWithToken, setRandomUsername }) => {
-    useEffect(() => {
-        loadUser();
-    }, [loadUser]);
-
+export const UserSettings = ({ user, loadUser, updateUser }) => {
     const classes = useStyles();
 
     const formik = useFormik({
         initialValues: {
+            username: '',
+            email: '',
         },
+        validationSchema: validationSchema,
         onSubmit: (values) => {
-            loadUser();
+            updateUser(values);
         },
     });
 
+    const { setFieldValue } = formik;
+
+    useEffect(() => {
+        loadUser();
+    }, [loadUser]);
+
+    useEffect(() => {
+        if (user.data?.email) setFieldValue('email', user.data.email);
+    }, [user.data?.email, setFieldValue]);
+
+    useEffect(() => {
+        if (user.data?.username) setFieldValue('username', user.data.username);
+    }, [user.data?.username, setFieldValue]);
+
     return (
         <PageContainer title="User Settings" maxWidth="xs">
-            <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                color="primary"
-                className={classes.submit}
-                onClick={() => { setRandomUsername(); }}
-            >Set Random Username</Button>
-            <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                color="primary"
-                className={classes.submit}
-                onClick={() => { loadUserWithToken(); }}
-            >Load User With Token</Button>
             <form className={classes.form} noValidate onSubmit={formik.handleSubmit}>
+                <TextField
+                    variant="outlined"
+                    margin="normal"
+                    required
+                    fullWidth
+                    id="username"
+                    label="Username"
+                    name="username"
+                    autoComplete="username"
+                    value={formik.values.username}
+                    onChange={formik.handleChange}
+                    error={formik.touched.username && Boolean(formik.errors.username)}
+                    helperText={formik.touched.username && formik.errors.username}
+                />
+                <TextField
+                    variant="outlined"
+                    margin="normal"
+                    required
+                    disabled
+                    fullWidth
+                    id="email"
+                    label="Email"
+                    name="email"
+                    autoComplete="email"
+                    value={formik.values.email}
+                    onChange={formik.handleChange}
+                    error={formik.touched.email && Boolean(formik.errors.email)}
+                    helperText={formik.touched.email && formik.errors.email}
+                />
                 <Button
                     type="submit"
                     fullWidth
                     variant="contained"
                     color="primary"
                     className={classes.submit}
-                >Load User</Button>
+                >Save</Button>
             </form>
-            { user.data ? (
-                <AuthLoader>
-                    <Typography component="pre">
-                        user: {JSON.stringify(user.data, null, '\t')}
-                    </Typography>
-                </AuthLoader>
-            ) : (
-                <React.Fragment />
-            )}
-        </PageContainer>
+        </PageContainer >
     )
 }
 
@@ -90,8 +117,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {
     loadUser,
-    loadUserWithToken,
-    setRandomUsername,
+    updateUser
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(UserSettings);

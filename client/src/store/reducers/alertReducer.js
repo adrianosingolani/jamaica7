@@ -9,6 +9,7 @@ const initialState = {
     show: false,
     text: null,
     severity: null,
+    timeout: 0,
     button: {
         onClick: null,
         label: null,
