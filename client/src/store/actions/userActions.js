@@ -4,6 +4,7 @@ import {
   USER_LOADING,
   USER_SUCCESS,
   USER_FAIL,
+  USER_UPDATE_FAIL,
   ALERT_SET,
 } from '../types';
 
@@ -53,7 +54,7 @@ export const updateUser = (formData) => async (dispatch) => {
     })
     .catch(err => {
       dispatch({
-        type: USER_FAIL,
+        type: USER_UPDATE_FAIL,
       });
       dispatch({
         type: ALERT_SET,

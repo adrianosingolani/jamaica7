@@ -24,6 +24,12 @@ export const USER_SUCCESS = 'USER_SUCCESS';
 export const USER_FAIL = 'USER_FAIL';
 export const USER_RESET = 'USER_RESET';
 
+export const USER_UPDATE_FAIL = 'USER_UPDATE_FAIL';
+
 export const EMAIL_LOADING = 'EMAIL_LOADING';
 export const EMAIL_SUCCESS = 'EMAIL_SUCCESS';
 export const EMAIL_FAIL = 'EMAIL_FAIL';
+
+export const PASSWORD_LOADING = 'PASSWORD_LOADING';
+export const PASSWORD_SUCCESS = 'PASSWORD_SUCCESS';
+export const PASSWORD_FAIL = 'PASSWORD_FAIL';

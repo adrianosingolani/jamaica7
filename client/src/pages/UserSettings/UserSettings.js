@@ -7,17 +7,19 @@ import * as yup from 'yup';
 import { makeStyles } from '@material-ui/core/styles';
 import {
     Button,
-    TextField
+    TextField,
+    Grid
 } from '@material-ui/core';
 
 import { loadUser, updateUser } from '../../store/actions/userActions';
+import { sendPasswordEmail } from '../../store/actions/passwordActions';
 
 import PageContainer from '../../components/PageContainer/PageContainer';
 
 const validationSchema = yup.object({
     username: yup
         .string('Enter your username')
-        .min(8, 'Username should be of minimum 8 characters length')
+        .min(3, 'Username should be of minimum 3 characters length')
         .required('Username is required'),
     email: yup
         .string('Enter your email')
@@ -39,7 +41,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export const UserSettings = ({ user, loadUser, updateUser }) => {
+export const UserSettings = ({ history, user, loadUser, updateUser, sendPasswordEmail }) => {
     const classes = useStyles();
 
     const formik = useFormik({
@@ -107,6 +109,28 @@ export const UserSettings = ({ user, loadUser, updateUser }) => {
                     className={classes.submit}
                 >Save</Button>
             </form>
+            <Grid container spacing={1}>
+                <Grid item xs={12} md={6}>
+                    <Button
+                        type="submit"
+                        variant="contained"
+                        color="primary"
+                        className={classes.submit}
+                        fullWidth
+                        onClick={() => { sendPasswordEmail(user.data.email) }}
+                    >Change Password</Button>
+                </Grid>
+                <Grid item xs={12} md={6}>
+                    <Button
+                        type="submit"
+                        variant="contained"
+                        color="primary"
+                        className={classes.submit}
+                        fullWidth
+                        disabled
+                    >Change Email</Button>
+                </Grid>
+            </Grid>
         </PageContainer >
     )
 }
@@ -117,7 +141,8 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {
     loadUser,
-    updateUser
+    updateUser,
+    sendPasswordEmail
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(UserSettings);
