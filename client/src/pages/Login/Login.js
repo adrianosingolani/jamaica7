@@ -98,10 +98,10 @@ export const Login = ({ history, logInUser, auth }) => {
                     >Log In</Button>
                     <Grid container>
                         <Grid item xs>
-                            <Link to="#">Forgot password?</Link>
+                            <Link to="/forgotpassword">Forgot password?</Link>
                         </Grid>
                         <Grid item>
-                            <Link to="#">Don't have an account? Register</Link>
+                            <Link to="/register">Don't have an account? Register</Link>
                         </Grid>
                     </Grid>
                 </form>

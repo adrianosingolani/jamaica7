@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 import { useFormik } from 'formik';
 import * as yup from 'yup';
@@ -9,24 +9,18 @@ import { makeStyles } from '@material-ui/core/styles';
 import {
     TextField,
     Button,
-    Grid,
 } from '@material-ui/core';
 
-import PasswordField from '../../components/PasswordField/PasswordField';
 import PageContainer from '../../components/PageContainer/PageContainer';
 import AuthLoader from '../../components/AuthLoader/AuthLoader';
 
-import { registerUser } from '../../store/actions/authActions';
+import { sendPasswordEmail } from '../../store/actions/passwordActions';
 
 const validationSchema = yup.object({
     email: yup
         .string('Enter your email')
         .email('Enter a valid email')
         .required('Email is required'),
-    password: yup
-        .string('Enter your password')
-        .min(8, 'Password should be of minimum 8 characters length')
-        .required('Password is required'),
 });
 
 const useStyles = makeStyles((theme) => ({
@@ -34,34 +28,35 @@ const useStyles = makeStyles((theme) => ({
         marginTop: theme.spacing(1),
     },
     submit: {
-        margin: theme.spacing(2, 0),
+        margin: theme.spacing(1, 0, 2),
     },
 }));
 
-export const Register = ({ history, auth, registerUser }) => {
+export const ForgotPassword = ({ history, auth, sendPasswordEmail }) => {
+    const location = useLocation();
+
     useEffect(() => {
         if (auth.authenticated) {
-            history.push('/usersettings');
+            if (location.pathname === '/login') history.push('/usersettings');
+            else history.push(location.pathname);
         }
-    }, [auth.authenticated, history]);
+    }, [auth.authenticated, history, location.pathname]);
 
     const classes = useStyles();
 
     const formik = useFormik({
         initialValues: {
             email: '',
-            password: '',
         },
         validationSchema: validationSchema,
         onSubmit: (values) => {
-            registerUser(values, history);
+            sendPasswordEmail(values.email);
         },
     });
-
     return (
         <AuthLoader>
-            <PageContainer title="Register" maxWidth="xs">
-                <form className={classes.form} noValidate onSubmit={formik.handleSubmit} >
+            <PageContainer title="Forgot Password" maxWidth="xs">
+                <form className={classes.form} noValidate onSubmit={formik.handleSubmit}>
                     <TextField
                         variant="outlined"
                         margin="normal"
@@ -76,27 +71,15 @@ export const Register = ({ history, auth, registerUser }) => {
                         error={formik.touched.email && Boolean(formik.errors.email)}
                         helperText={formik.touched.email && formik.errors.email}
                     />
-                    <PasswordField
-                        value={formik.values.password}
-                        onChange={formik.handleChange}
-                        error={formik.touched.password && Boolean(formik.errors.password)}
-                        helperText={formik.touched.password && formik.errors.password}
-                    />
                     <Button
                         type="submit"
                         fullWidth
                         variant="contained"
                         color="primary"
                         className={classes.submit}
-                    >Register</Button>
-                    <Grid container>
-                        <Grid item xs></Grid>
-                        <Grid item>
-                            <Link to="/login">Already have an account? Log in</Link>
-                        </Grid>
-                    </Grid>
-                </form >
-            </PageContainer >
+                    >Send Email</Button>
+                </form>
+            </PageContainer>
         </AuthLoader>
     )
 }
@@ -106,7 +89,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = {
-    registerUser,
+    sendPasswordEmail,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Register)
+export default connect(mapStateToProps, mapDispatchToProps)(ForgotPassword)

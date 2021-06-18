@@ -44,11 +44,12 @@ router.post('/register', function (req, res) {
             };
 
             sendgrid.send(welcomeEmail)
-                .then(() => { }, error => {
-                    console.error(error);
-
-                    if (error.response) {
-                        console.error(error.response.body)
+                .then(() => {
+                    // email was successfully sent
+                }, error => {
+                    if (error) {
+                        console.log('Some error occurred while sending the welcome email:');
+                        console.error(error.response.body);
                     }
                 });
 

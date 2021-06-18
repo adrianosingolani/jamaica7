@@ -56,7 +56,7 @@ router.post('/confirmemail', function (req, res) {
                 }
             });
         } else {
-            if (decoded.type !== 'email') return res.status(400).send({ message: 'invalid token' });
+            if (decoded.type !== 'email') return res.status(400).send({ message: 'Invalid token' });
 
             const expired_email_temporary_token = jwt.sign({ email: decoded.email, type: 'email' }, process.env.JWT_SECRET, { expiresIn: '1s' });
 
@@ -71,14 +71,14 @@ router.post('/confirmemail', function (req, res) {
                 })
                 .then((user) => {
                     if (user) {
-                        return res.send({ message: 'email confirmed' });
+                        return res.send({ message: 'Email confirmed' });
                     } else {
                         // jwt is valid but user not found
-                        return res.status(400).send({ message: 'user not found' });
+                        return res.status(400).send({ message: 'User not found' });
                     }
                 })
                 .catch((err) => {
-                    return res.status(400).send({ message: 'some error occurred while confirming your email address' });
+                    return res.status(400).send({ message: 'Some error occurred while confirming your email address' });
                 });
         }
     });
@@ -114,17 +114,18 @@ router.post('/sendconfirmationemail', function (req, res) {
 
             sendgrid.send(confirmationEmail)
                 .then(() => {
-                    res.send({ message: 'email sent' });
+                    return res.send({ message: 'A link for confirming your email address was sent to you' });
                 }, error => {
                     if (error) {
-                        console.error(error.response.body)
-                        return res.status(400).send({ message: 'some error occurred while sending the confirmation email' });
+                        console.log('some error occurred while sending the confirmation email:');
+                        console.error(error.response.body);
+                        return res.status(400).send({ message: 'Some error occurred while sending the confirmation email' });
                     }
                 });
 
         })
         .catch((err) => {
-            return res.status(400).send({ message: 'user not found' });
+            return res.status(400).send({ message: 'User not found' });
         });
 });
 
@@ -156,17 +157,18 @@ router.post('/sendpasswordemail', function (req, res) {
 
             sendgrid.send(passwordEmail)
                 .then(() => {
-                    res.send({ message: 'a link for changing your password was sent to your email' });
+                    return res.send({ message: 'A link for changing your password was sent to your email' });
                 }, error => {
                     if (error) {
-                        console.error(error.response.body)
-                        return res.status(400).send({ message: 'some error occurred while sending the password change email email' });
+                        console.log('Some error occurred while sending the password change email:');
+                        console.error(error.response.body);
+                        return res.status(400).send({ message: 'Some error occurred while sending the password change email' });
                     }
                 });
 
         })
         .catch((err) => {
-            return res.status(400).send({ message: 'user not found' });
+            return res.status(400).send({ message: 'User not found' });
         });
 });
 
@@ -182,7 +184,7 @@ router.post('/changepassword', function (req, res) {
 
             return res.status(400).send({ message: message });
         } else {
-            if (decoded.type !== 'password') return res.status(400).send({ message: 'invalid token' });
+            if (decoded.type !== 'password') return res.status(400).send({ message: 'Invalid token' });
 
             const expired_password_temporary_token = jwt.sign({ email: decoded.email, type: 'password' }, process.env.JWT_SECRET, { expiresIn: '1s' });
 
@@ -199,14 +201,14 @@ router.post('/changepassword', function (req, res) {
                     if (user) {
                         await user.setPassword(password);
                         await user.save();
-                        return await res.send({ message: 'password changed' });
+                        return await res.send({ message: 'Password changed' });
                     } else {
                         // jwt is valid but user not found
-                        return res.status(400).send({ message: 'user not found' });
+                        return res.status(400).send({ message: 'User not found' });
                     }
                 })
                 .catch((err) => {
-                    return res.status(400).send({ message: 'some error occurred while changing your password' });
+                    return res.status(400).send({ message: 'Some error occurred while changing your password' });
                 });
         }
     });
