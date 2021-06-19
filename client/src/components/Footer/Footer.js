@@ -17,7 +17,7 @@ export const Footer = (props) => {
     return (
         <AppBar position="relative">
             <Toolbar>
-                <Typography className={classes.title}>MERN Boilerplate - 2021</Typography>
+                <Typography className={classes.title}>Jamaica 7'' - 2021</Typography>
             </Toolbar>
         </AppBar>
     )

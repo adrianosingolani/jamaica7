@@ -31,7 +31,7 @@ export const Header = ({ location, history, auth, logOutUser, resetAlert }) => {
     return (
         <AppBar position="relative">
             <Toolbar>
-                <Typography variant="h6" className={classes.title}>MERN Boilerplate</Typography>
+                <Typography variant="h6" className={classes.title}>Jamaica 7''</Typography>
                 <Button color="inherit" component={Link} to="/">Home</Button>
                 {!auth.authenticated ? (
                     <React.Fragment>

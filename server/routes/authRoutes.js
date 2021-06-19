@@ -38,7 +38,7 @@ router.post('/register', function (req, res) {
                     name: process.env.SENDGRID_FROM_NAME,
                     email: process.env.SENDGRID_FROM_EMAIL,
                 },
-                subject: 'Welcome to MERN Boilerplate',
+                subject: `Welcome to Jamaica 7''`,
                 text: `Thank you for registering!\n\nPlease click or copy and paste the following link on your browser for confirming your email address:\n${link}`,
                 html: `<p>Thank you for registering!</p><p>Please click on the following link for confirming your email address:<br /><a href="${link}">${link}</a></p>`,
             };
