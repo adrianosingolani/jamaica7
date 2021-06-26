@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import PageContainer from '../../components/PageContainer/PageContainer';
+import PageContainer from '../../components/Layout/PageContainer';
 
 import { makeStyles } from '@material-ui/core/styles';
 import { Typography, Box } from '@material-ui/core';

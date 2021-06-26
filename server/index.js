@@ -23,6 +23,7 @@ const mongooseConfig = {
     useCreateIndex: true,
     useFindAndModify: false,
 };
+
 mongoose.connect(process.env.MONGOATLAS_URI, mongooseConfig)
     .then(connection_obj => {
         // successful connection

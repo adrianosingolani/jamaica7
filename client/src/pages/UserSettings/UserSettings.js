@@ -14,7 +14,7 @@ import {
 import { loadUser, updateUser } from '../../store/actions/userActions';
 import { sendPasswordEmail } from '../../store/actions/passwordActions';
 
-import PageContainer from '../../components/PageContainer/PageContainer';
+import PageContainer from '../../components/Layout/PageContainer';
 
 const validationSchema = yup.object({
     username: yup

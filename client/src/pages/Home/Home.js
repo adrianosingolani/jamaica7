@@ -1,21 +1,23 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import PageContainer from '../../components/PageContainer/PageContainer';
+import PageContainer from '../../components/Layout/PageContainer';
 
-export const Home = (props) => {
+import RecordList from '../../components/Records/RecordList';
+
+export const Home = () => {
+
     return (
-        <PageContainer title= "Home">
-            <p>1</p>
-            <p>2</p>
-            <p>3</p>
-            <p>testando</p>
+        <PageContainer title="">
+            <RecordList />
         </PageContainer>
-    )
+    );
 }
 
 const mapStateToProps = (state) => ({
-    
 })
 
-export default connect(mapStateToProps, {})(Home);
+const mapDispatchToProps = {
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home);

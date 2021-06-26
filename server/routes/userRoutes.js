@@ -25,16 +25,16 @@ router.patch('/update', requireAuth, function (req, res) {
     if (error) return res.status(422).send({ message: error.message });
 
 
-    User.findByIdAndUpdate(req.user._id, { username: req.body.username }, { new: true }) 
-    .then((user) => {
-        const updatedUser = User.returnUserToClient(user);
+    User.findByIdAndUpdate(req.user._id, { username: req.body.username }, { new: true })
+        .then((user) => {
+            const updatedUser = User.returnUserToClient(user);
 
-        res.send({ user: updatedUser });
-    })
-    .catch((err => {
-        if (err.name === 'MongoError' && err.code === 11000) return res.status(422).send({ message: 'Username is already in use' });
-        else return res.status(422).send({ message: err.message });
-    }));
+            res.send({ user: updatedUser });
+        })
+        .catch((err => {
+            if (err.name === 'MongoError' && err.code === 11000) return res.status(422).send({ message: 'Username is already in use' });
+            else return res.status(422).send({ message: err.message });
+        }));
 });
 
 router.post('/confirmemail', function (req, res) {
@@ -197,11 +197,19 @@ router.post('/changepassword', function (req, res) {
                     password_temporary_token: expired_password_temporary_token,
                 }
             )
-                .then(async (user) => {
+                .then((user) => {
                     if (user) {
-                        await user.setPassword(password);
-                        await user.save();
-                        return await res.send({ message: 'Password changed' });
+                        user.setPassword(password)
+                            .then(() => {
+                                user.save();
+                            })
+                            .then(() => {
+                                return res.send({ message: 'Password changed' });
+                            })
+                            .catch((err) => {
+                                console.log(err);
+                                return res.status(400).send({ message: err.message });
+                            });
                     } else {
                         // jwt is valid but user not found
                         return res.status(400).send({ message: 'User not found' });

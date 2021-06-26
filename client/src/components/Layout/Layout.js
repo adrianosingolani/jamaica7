@@ -2,18 +2,29 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import { makeStyles } from '@material-ui/core/styles';
-import { Box } from '@material-ui/core';
+import { Grid } from '@material-ui/core';
 
-import Header from '../Header/Header';
-import Footer from '../Footer/Footer';
-import CustomAlert from '../CustomAlert/CustomAlert';
+import Sidebar from '../Sidebar/Sidebar';
+import Player from '../Player/Player';
 
 const useStyles = makeStyles((theme) => ({
-  box: {
-    display: 'flex',
-    justifyContent: 'center',
-    margin: theme.spacing(3),
-  }
+  container: {
+    position: 'relative'
+  },
+  sidebar: {
+    backgroundColor: '#111',
+  },
+  page: {
+    backgroundColor: '#222',
+    color: '#FFF',
+  },
+  player: {
+    position: 'sticky',
+    height: '100vh',
+    top: 0,
+    backgroundColor: '#111',
+    color: '#FFF',
+  },
 }));
 
 const Layout = ({ children }) => {
@@ -21,22 +32,27 @@ const Layout = ({ children }) => {
 
   return (
     <React.Fragment>
-      <Header />
-      <CustomAlert />
-      <Box className={ classes.box }>
+      <Grid container className={classes.container}>
+        <Grid item xs={2} className={classes.sidebar}>
+        <Sidebar/>
+        </Grid>
+        <Grid item xs={6} className={classes.page}>
         { children }
-      </Box>
-      <Footer />
+        </Grid>
+        <Grid item xs={4} className={classes.player}>
+          <Player />
+        </Grid>
+      </Grid>
     </React.Fragment>
   );
 };
 
 const mapStateToProps = (state) => ({
-  
+
 })
 
 const mapDispatchToProps = {
-  
+
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Layout)

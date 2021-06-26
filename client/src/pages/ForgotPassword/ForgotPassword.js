@@ -11,7 +11,7 @@ import {
     Button,
 } from '@material-ui/core';
 
-import PageContainer from '../../components/PageContainer/PageContainer';
+import PageContainer from '../../components/Layout/PageContainer';
 import AuthLoader from '../../components/AuthLoader/AuthLoader';
 
 import { sendPasswordEmail } from '../../store/actions/passwordActions';

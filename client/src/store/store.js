@@ -5,6 +5,8 @@ import authReducer from './reducers/authReducer';
 import userReducer from './reducers/userReducer';
 import emailReducer from './reducers/emailReducer';
 import passwordReducer from './reducers/passwordReducer';
+import recordReducer from './reducers/recordReducer';
+import playlistReducer from './reducers/playlistReducer';
 
 export default configureStore({
   reducer: {
@@ -13,6 +15,8 @@ export default configureStore({
     user: userReducer,
     email: emailReducer,
     password: passwordReducer,
+    record: recordReducer,
+    playlist: playlistReducer,
   },
   middleware: getDefaultMiddleware({
     serializableCheck: {

@@ -13,7 +13,7 @@ import {
 } from '@material-ui/core';
 
 import PasswordField from '../../components/PasswordField/PasswordField';
-import PageContainer from '../../components/PageContainer/PageContainer';
+import PageContainer from '../../components/Layout/PageContainer';
 import AuthLoader from '../../components/AuthLoader/AuthLoader';
 
 import { registerUser } from '../../store/actions/authActions';

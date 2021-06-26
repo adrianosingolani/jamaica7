@@ -13,6 +13,7 @@ import UserSettings from './pages/UserSettings/UserSettings';
 import ConfirmEmail from './pages/ConfirmEmail/ConfirmEmail';
 import ChangePassword from './pages/ChangePassword/ChangePassword';
 import ForgotPassword from './pages/ForgotPassword/ForgotPassword';
+import SelectedRecord from './pages/SelectedRecord/SelectedRecord';
 
 import { checkAuth } from './store/actions/authActions';
 
@@ -35,6 +36,7 @@ export const App = ({ auth, checkAuth }) => {
               <Route exact path="/confirmemail/:token" component={ConfirmEmail} />
               <Route exact path="/changepassword/:token" component={ChangePassword} />
               <ProtectedRoute path="/usersettings" component={UserSettings} />
+              <Route exact path="/record/:recordid" component={SelectedRecord} />
               <Route exact path="/" component={Home} />
               <Route component={NotFound} />
             </Switch>

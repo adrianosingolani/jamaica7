@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import { confirmEmail, sendConfirmationEmail } from '../../store/actions/emailActions';
 
-import PageContainer from '../../components/PageContainer/PageContainer';
+import PageContainer from '../../components/Layout/PageContainer';
 
 import { makeStyles } from '@material-ui/core/styles';
 import { Typography, CircularProgress, Button, Box } from '@material-ui/core/';

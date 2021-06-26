@@ -3,7 +3,7 @@ import {
     USER_SUCCESS,
     USER_FAIL,
     USER_RESET,
-    USER_UPDATE_FAIL,
+    // USER_UPDATE_FAIL,
     LOGOUT_FAIL,
     LOGOUT_SUCCESS,
 } from '../types';
@@ -26,13 +26,12 @@ export default function authReducer(state = initialState, { type, payload }) {
                 loading: false,
                 data: payload.user,
             };
-
-        case USER_UPDATE_FAIL: {
-            return {
-                ...state,
-                loading: false,
-            }
-        };
+        // case USER_UPDATE_FAIL: {
+        //     return {
+        //         ...state,
+        //         loading: false,
+        //     }
+        // };
         case USER_FAIL:
         case USER_RESET:
         case LOGOUT_FAIL:

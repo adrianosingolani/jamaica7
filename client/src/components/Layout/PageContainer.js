@@ -15,6 +15,9 @@ const useStyles = makeStyles((theme) => ({
         flexDirection: 'column',
         alignItems: 'center',
     },
+    container: {
+        paddingLeft: 0,
+    }
 }));
 
 export const PageContainer = (props) => {
@@ -23,7 +26,7 @@ export const PageContainer = (props) => {
     const classes = useStyles();
 
     return (
-        <Container component="main" {...props}>
+        <Container className={classes.container} component="main" {...props}>
             <CssBaseline />
             <Box className={classes.box}>
                 <Typography variant="h5">{ title }</Typography>
