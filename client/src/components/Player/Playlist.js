@@ -12,22 +12,24 @@ const useStyles = makeStyles((theme) => ({
     box: {
         border: '1px solid #222',
         padding: theme.spacing(2, 2, 0, 2),
-        margin: theme.spacing(3),
+        margin: theme.spacing(0, 3, 3, 3),
+        flexGrow: 1,
+        overflow: 'auto'
     },
 }));
 
-export const Playlist = ({ playlist }) => {
+export const Playlist = ({ player }) => {
     const classes = useStyles();
 
     return (
         <Box className={classes.box}>
-            <TrackList list={playlist.tracks} action={'play'} />
+            <TrackList list={player.playlist} action='play' />
         </Box>
     )
 }
 
 const mapStateToProps = (state) => ({
-    playlist: state.playlist,
+    player: state.player,
 })
 
 const mapDispatchToProps = {

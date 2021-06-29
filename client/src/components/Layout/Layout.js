@@ -12,6 +12,9 @@ const useStyles = makeStyles((theme) => ({
     position: 'relative'
   },
   sidebar: {
+    position: 'sticky',
+    height: '100vh',
+    top: 0,
     backgroundColor: '#111',
   },
   page: {
@@ -24,6 +27,7 @@ const useStyles = makeStyles((theme) => ({
     top: 0,
     backgroundColor: '#111',
     color: '#FFF',
+    display: 'flex',
   },
 }));
 

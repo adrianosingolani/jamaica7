@@ -1,79 +1,67 @@
 import React from 'react'
 import { connect } from 'react-redux';
-// import { closest } from 'fastest-levenshtein';
 
 import { makeStyles } from '@material-ui/core/styles';
 import { Typography } from '@material-ui/core';
 
-import { addTrackToPlaylist, playTrack } from '../../store/actions/playlistActions';
+import { addTrackToPlaylist, playTrack } from '../../store/actions/playerActions';
 
 const useStyles = makeStyles((theme) => ({
     track: {
         '&:hover': {
-            backgroundColor: '#1113'
+            backgroundColor: '#333'
         },
         cursor: 'pointer',
+    },
+    disabled: {
+        opacity: 0.1,
+    },
+    isPlaying: {
+        color: '#8AF',
     }
 }));
 
-export const TrackItem = ({ addTrackToPlaylist, playTrack, track, action }) => {
+export const TrackItem = ({ player, addTrackToPlaylist, playTrack, track, action, playlistPosition }) => {
     const classes = useStyles();
 
-    // const record = recordState.selected.data;
-
-    // function findVideoAndPlay(trackString) {
-    //     const { videos } = record;
-
-    //     if (videos) {
-    //         const videoTitles = videos.map(video => {
-    //             return video.title;
-    //         })
-
-    //         const closestVideoTitle = closest(trackString, videoTitles);
-    //         const closestVideoIndex = videoTitles.indexOf(closestVideoTitle);
-
-    //         const url = new URL(videos[closestVideoIndex].uri);
-    //         const searchParams = new URLSearchParams(url.search);
-    //         const videoId = searchParams.get("v");
-
-    //         playTrack(videoId);
-    //     } else {
-    //         console.log('no videos');
-    //     }
-    // }
-
     let _onClick;
+    let itemClassName;
 
     if (action === 'add') {
+        itemClassName = track.videoIds.length === 0 ? classes.disabled : null;
+
         _onClick = () => {
             addTrackToPlaylist(track);
         }
     } else if (action === 'play') {
+        itemClassName = player.currentPlaying === playlistPosition ? classes.isPlaying : null;
+
         _onClick = () => {
-            playTrack(track);
+            playTrack(playlistPosition);
         }
     }
 
     return (
-        <React.Fragment>
-            <Typography
-                paragraph
-                className={classes.track}
-                onClick={() => {
-                    // findVideoAndPlay(`${track.artists} - ${track.title}`);
-                    _onClick();
-                }}
-            >
-                <Typography variant="body1" component="span" display="block">
-                    <b>{track.artists}</b>
-                </Typography>
-                <Typography variant="body2" component="span" display="block"><i>{track.title}</i></Typography>
+        <Typography
+            paragraph
+            classes={{ root: classes.track }}
+            className={itemClassName}
+            onClick={() => {
+                if (track.videoIds) _onClick();
+            }}
+        >
+            <Typography variant="body1" component="span" display="block">
+                <b>{track.artists}</b>
             </Typography>
-        </React.Fragment>
+            <Typography variant="body2" component="span" display="block">
+                <i>{track.title}</i>
+            </Typography>
+        </Typography>
     )
 }
 
 const mapStateToProps = (state) => ({
+    player: state.player,
 })
 
 const mapDispatchToProps = {

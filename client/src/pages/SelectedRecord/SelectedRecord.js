@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import { closest } from 'fastest-levenshtein';
+import { distance } from 'fastest-levenshtein';
 
 import { makeStyles } from '@material-ui/core/styles';
 import {
@@ -25,23 +25,52 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
+function dynamicSort(property) {
+    var sortOrder = 1;
+    if (property[0] === "-") {
+        sortOrder = -1;
+        property = property.substr(1);
+    }
+    return function (a, b) {
+        /* next line works with strings and numbers, 
+         * and you may want to customize it to your needs
+         */
+        var result = (a[property] < b[property]) ? -1 : (a[property] > b[property]) ? 1 : 0;
+        return result * sortOrder;
+    }
+}
+
 function findVideo(trackString, videos) {
-    let videoId;
+    // console.log('findVideo');
+    let videoIds = [];
 
     if (videos) {
-        const videoTitles = videos.map(video => {
-            return video.title;
-        })
+        const closeVideos = videos.map(video => {
+            const videoDistance = distance(trackString, video.title);
 
-        const closestVideoTitle = closest(trackString, videoTitles);
-        const closestVideoIndex = videoTitles.indexOf(closestVideoTitle);
+            if (videoDistance <= 10) {
+                const url = new URL(video.uri);
+                const searchParams = new URLSearchParams(url.search);
+                const videoId = searchParams.get("v");
 
-        const url = new URL(videos[closestVideoIndex].uri);
-        const searchParams = new URLSearchParams(url.search);
-        videoId = searchParams.get("v");
+                const videoObject = {
+                    id: videoId,
+                    title: video.title,
+                    distance: videoDistance,
+                }
+
+                return videoObject;
+            } else {
+                return null;
+            }
+        }).filter(v => v);
+
+        closeVideos.sort(dynamicSort('distance'));
+
+        videoIds = closeVideos.map(video => video.id);
     }
 
-    return videoId;
+    return videoIds;
 }
 
 export const SelectedRecord = (props) => {
@@ -70,30 +99,34 @@ export const SelectedRecord = (props) => {
 
         const newTracklistObject = tracklist.map(track => {
 
-            const artistsString = track?.artists ? (
-                // track has its own artists array. Create a string
-                track.artists.map((artist, i, arr) => {
-                    if (i < arr.length - 1) return `${artist.name} / `;
-                    else return artist.name;
-                }).join('')
-            ) : (
-                // use the one of record array
-                recordArtistsString
-            );
-            
-            const newTrackObject = {
-                recordId: selected.data.id,
-                title: track.title,
-                videoId: findVideo(artistsString, videos),
-                artists: artistsString,
+            if (track.title) {
+                const artistsString = track?.artists ? (
+                    // track has its own artists array. Create a string
+                    track.artists.map((artist, i, arr) => {
+                        if (i < arr.length - 1) return `${artist.name} / `;
+                        else return artist.name;
+                    }).join('')
+                ) : (
+                    // use the one of record array
+                    recordArtistsString
+                );
+    
+                const newTrackObject = {
+                    recordId: selected.data.id,
+                    title: track.title,
+                    videoIds: findVideo(artistsString + ' ' + track.title, videos),
+                    artists: artistsString,
+                }
+                return newTrackObject;
+            } else {
+                return null;
             }
-            return newTrackObject;
-        });
+        }).filter(t => t);
 
         return (
             <Box className={classes.box}>
                 <RecordCarousel images={images} alt={alt} />
-                <TrackList list={newTracklistObject} action={'add'} />
+                <TrackList list={newTracklistObject} action='add' />
                 <Divider className={classes.divider} />
                 <Typography paragraph variant="body2">
                     <Typography variant="inherit" display="block">
