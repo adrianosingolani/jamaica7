@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import { Typography } from '@material-ui/core';
 
-import { addTrackToPlaylist, playTrack } from '../../store/actions/playerActions';
+import { addTrackToPlaylist, setCurrentTrack, playTrack } from '../../store/actions/playerActions';
 
 const useStyles = makeStyles((theme) => ({
     track: {
@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-export const TrackItem = ({ player, addTrackToPlaylist, playTrack, track, action, playlistPosition }) => {
+export const TrackItem = ({ player, addTrackToPlaylist, setCurrentTrack, playTrack, track, action, playlistPosition }) => {
     const classes = useStyles();
 
     let _onClick;
@@ -34,10 +34,11 @@ export const TrackItem = ({ player, addTrackToPlaylist, playTrack, track, action
             addTrackToPlaylist(track);
         }
     } else if (action === 'play') {
-        itemClassName = player.currentPlaying === playlistPosition ? classes.isPlaying : null;
+        itemClassName = player.currentPlaying.trackIndex === playlistPosition ? classes.isPlaying : null;
 
         _onClick = () => {
-            playTrack(playlistPosition);
+            setCurrentTrack(playlistPosition);
+            playTrack();
         }
     }
 
@@ -66,6 +67,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {
     addTrackToPlaylist,
+    setCurrentTrack,
     playTrack,
 }
 

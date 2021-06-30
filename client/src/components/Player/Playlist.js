@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 
 import { makeStyles } from '@material-ui/core/styles';
@@ -7,6 +7,8 @@ import {
 } from '@material-ui/core/';
 
 import TrackList from '../Tracks/TrackList';
+
+import { playTrack, setCurrentTrack } from '../../store/actions/playerActions';
 
 const useStyles = makeStyles((theme) => ({
     box: {
@@ -18,7 +20,14 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export const Playlist = ({ player }) => {
+export const Playlist = ({ player, playTrack, setCurrentTrack }) => {
+    useEffect(() => {
+        if (player.playlist.length === 1) {
+            setCurrentTrack(0);
+            playTrack();
+        }
+    }, [player.playlist]);
+
     const classes = useStyles();
 
     return (
@@ -33,6 +42,8 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = {
+    setCurrentTrack,
+    playTrack
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Playlist)

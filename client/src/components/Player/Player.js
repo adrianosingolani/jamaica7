@@ -11,6 +11,8 @@ import {
     Box,
 } from '@material-ui/core/';
 
+import { setVolume, setDuration, setCurrentTime } from '../../store/actions/playerActions';
+
 const useStyles = makeStyles((theme) => ({
     box: {
         display: 'flex',
@@ -20,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-export const Player = ({ player }) => {
+export const Player = ({ player, setVolume, setDuration, setCurrentTime }) => {
     const classes = useStyles();
 
     const [videoIndex, setVideoIndex] = useState(0);
@@ -33,7 +35,7 @@ export const Player = ({ player }) => {
     }, [player.currentPlaying]);
 
     const changeVideo = () => {
-        if (videoIndex + 1 >= playlist[currentPlaying]?.videoIds.length) setVideoIndex(0);
+        if (videoIndex + 1 >= playlist[currentPlaying.trackIndex]?.videoIds.length) setVideoIndex(0);
         else setVideoIndex(prevVideoIndex => prevVideoIndex + 1);
     }
 
@@ -45,10 +47,13 @@ export const Player = ({ player }) => {
 
     const playerReady = (event) => {
         console.log('playerReady');
+        event.target.setVolume(player.volume);
         setPlayerInstance(event.target);
     }
 
     const playerStateChange = (playerState) => {
+        let currentTimeInterval;
+
         switch (playerState) {
             case -1:
                 // unstarted
@@ -57,14 +62,21 @@ export const Player = ({ player }) => {
             case 0:
                 // ended
                 // console.log('ended');
+                clearInterval(currentTimeInterval);
                 break;
             case 1:
                 // playing
                 // console.log('playing');
+                setDuration(playerInstance.getDuration());
+
+                currentTimeInterval = setInterval(() => {
+                    setCurrentTime(playerInstance.getCurrentTime());
+                }, 1000);
                 break;
             case 2:
                 // paused
                 // console.log('paused');
+                clearInterval(currentTimeInterval);
                 break;
             case 3:
                 // buffering
@@ -94,7 +106,7 @@ export const Player = ({ player }) => {
 
     // bangarang: nw1ECvnqlu8
     // shortest: cdwal5Kw3Fc
-    const videoId = playlist[currentPlaying]?.videoIds ? playlist[currentPlaying]?.videoIds[videoIndex] : null;
+    const videoId = playlist[currentPlaying.trackIndex]?.videoIds ? playlist[currentPlaying.trackIndex]?.videoIds[videoIndex] : null;
 
     return (
         <Box className={classes.box}>
@@ -130,6 +142,9 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = {
+    setVolume,
+    setDuration, 
+    setCurrentTime,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Player);

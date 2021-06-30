@@ -6,7 +6,8 @@ import {
     Box,
     Grid,
     IconButton,
-    Slider
+    Slider,
+    Typography
 } from '@material-ui/core/';
 
 import PlayCircleFilledIcon from '@material-ui/icons/PlayCircleFilled';
@@ -17,7 +18,13 @@ import VolumeDownIcon from '@material-ui/icons/VolumeDown';
 import VolumeUpIcon from '@material-ui/icons/VolumeUp';
 // import VolumeOffIcon from '@material-ui/icons/VolumeOff';
 
-import { playTrack, pauseTrack, resumeTrack } from '../../store/actions/playerActions';
+import {
+    setCurrentTrack,
+    pauseTrack,
+    playTrack,
+    setVolume,
+    setCurrentTime,
+} from '../../store/actions/playerActions';
 
 const useStyles = makeStyles((theme) => ({
     box: {
@@ -43,7 +50,15 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-export const PlayerControls = ({ player, pauseTrack, resumeTrack, playTrack, playerInstance }) => {
+const formatTime = (timeInSeconds) => {
+    const minutes = Math.floor(timeInSeconds / 60);
+    const seconds = Math.floor((timeInSeconds % 60)).toLocaleString('en-US', { minimumIntegerDigits: 2, useGrouping: false });
+    const timeString = `${minutes}:${seconds}`;
+
+    return timeString;
+}
+
+export const PlayerControls = ({ player, pauseTrack, playTrack, setCurrentTrack, setVolume, playerInstance }) => {
     const classes = useStyles();
 
     // useEffect(() => {
@@ -51,10 +66,18 @@ export const PlayerControls = ({ player, pauseTrack, resumeTrack, playTrack, pla
     //     else playerInstance.pauseVideo();
     // }, [player.playing, playerInstance])
 
+    useEffect(() => {
+        playerInstance.setVolume(player.volume);
+    }, [player.volume, playerInstance]);
+
+    // useEffect(() => {
+    //     console.log(playerInstance.playerInfo.currentTime);
+    // }, [playerInstance.playerInfo.currentTime])
+
     const play = () => {
         // console.log('play');
         playerInstance.playVideo();
-        resumeTrack();
+        playTrack();
     }
 
     const pause = () => {
@@ -65,16 +88,16 @@ export const PlayerControls = ({ player, pauseTrack, resumeTrack, playTrack, pla
 
     const previous = () => {
         // console.log('previous');
-        if (player.currentPlaying > 0) {
-            playTrack(player.currentPlaying-1);
+        if (player.currentPlaying.trackIndex > 0) {
+            setCurrentTrack(player.currentPlaying.trackIndex - 1);
         }
     }
 
     const next = () => {
         // console.log('next');
-        const nextTrack = player.currentPlaying + 1;
+        const nextTrack = player.currentPlaying.trackIndex + 1;
         if (nextTrack < player.playlist.length) {
-            playTrack(nextTrack);
+            setCurrentTrack(nextTrack);
         }
     }
 
@@ -104,11 +127,41 @@ export const PlayerControls = ({ player, pauseTrack, resumeTrack, playTrack, pla
                             <VolumeDownIcon />
                         </Grid>
                         <Grid item xs>
-                            {/* <Slider value={value} onChange={handleChange} aria-labelledby="continuous-slider" /> */}
-                            <Slider classes={{colorPrimary: classes.sliderPrimary}} aria-labelledby="continuous-slider" />
+                            <Slider
+                                classes={{ colorPrimary: classes.sliderPrimary }}
+                                value={player.volume}
+                                onChange={(event, value) => {
+                                    setVolume(value);
+                                }}
+                            />
                         </Grid>
                         <Grid item>
                             <VolumeUpIcon />
+                        </Grid>
+                    </Grid>
+                </Grid>
+                <Grid item sm={12} className={classes.item}>
+                    <Grid container spacing={1} alignItems='center'>
+                        <Grid item>
+                            <Typography variant='subtitle2'>
+                                {player.currentPlaying.currentTime ? formatTime(player.currentPlaying.currentTime) : '0:00'}
+                            </Typography>
+                        </Grid>
+                        <Grid item xs>
+                            <Slider
+                                classes={{ colorPrimary: classes.sliderPrimary }}
+                                value={player.currentPlaying.currentTime}
+                                max={player.currentPlaying.duration}
+                                onChange={(event, value) => {
+                                    console.log(value);
+                                    setCurrentTime(value);
+                                }}
+                            />
+                        </Grid>
+                        <Grid item>
+                            <Typography variant='subtitle2'>
+                                {player.currentPlaying.duration ? formatTime(player.currentPlaying.duration) : '0:00'}
+                            </Typography>
                         </Grid>
                     </Grid>
                 </Grid>
@@ -123,9 +176,10 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = {
-    playTrack,
+    setCurrentTrack,
     pauseTrack,
-    resumeTrack,
+    playTrack,
+    setVolume
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(PlayerControls)
