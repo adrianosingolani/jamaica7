@@ -14,8 +14,8 @@ import {
 
 const useStyles = makeStyles((theme) => ({
     card: {
-        marginBottom: theme.spacing(3),
-        marginLeft: theme.spacing(3),
+        marginBottom: theme.spacing(2),
+        marginLeft: theme.spacing(2),
     },
     media: {
         width: '100%',
@@ -24,7 +24,6 @@ const useStyles = makeStyles((theme) => ({
     content: {
         height: 75,
         backgroundColor: '#111',
-        color: '#FFF',
     }
 }));
 
@@ -42,9 +41,8 @@ export const RecordCard = ({ history, recordItem }) => {
     const artist = title.substring(0, title.indexOf(' - '));
     const track = title.substring(title.indexOf(' - ') + 3);
 
-
     return (
-        <Grid item xs={4}>
+        <Grid item xs={12} md={6} lg={4} xl={3}>
             <Card className={classes.card} onClick={() => selectRecord(recordItem)}>
                 <CardActionArea>
                     <CardMedia

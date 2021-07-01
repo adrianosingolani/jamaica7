@@ -15,29 +15,26 @@ const useStyles = makeStyles((theme) => ({
         flexDirection: 'column',
         alignItems: 'center',
     },
-    container: {
-        paddingLeft: 0,
-    }
 }));
 
 export const PageContainer = (props) => {
-    const {title, children} = props;
-    
+    const { title, children } = props;
+
     const classes = useStyles();
 
     return (
-        <Container className={classes.container} component="main" {...props}>
+        <Container disableGutters component="main" {...props}>
             <CssBaseline />
             <Box className={classes.box}>
-                <Typography variant="h5">{ title }</Typography>
+                <Typography variant="h5">{title}</Typography>
             </Box>
-            { children }
-            </Container>
+            {children}
+        </Container>
     )
 }
 
 const mapStateToProps = (state) => ({
-    
+
 })
 
 export default connect(mapStateToProps, {})(PageContainer);

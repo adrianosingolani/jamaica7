@@ -5,26 +5,16 @@ import Carousel from 'react-material-ui-carousel';
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
-    box: {
-        padding: theme.spacing(3),
-        overflow: 'hidden',
-    },
     image: {
         width: '100%',
     },
-    track: {
-        '&:hover': {
-            backgroundColor: '#1113'
-        },
-        cursor: 'pointer',
-    }
 }));
 
 export const RecordCarousel = ({ images, alt } ) => {
     const classes = useStyles();
 
     return (
-        <Carousel autoPlay={false} animation="slide" cycleNavigation={false}>
+        <Carousel autoPlay={false} animation="slide" cycleNavigation={true}>
             {
                 images.map((item, i) => {
                     return <img className={classes.image} key={'image' + i} src={item.resource_url} alt={alt} />

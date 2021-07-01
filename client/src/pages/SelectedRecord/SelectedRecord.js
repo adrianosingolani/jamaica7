@@ -11,13 +11,13 @@ import {
 
 import { loadRecord } from '../../store/actions/recordActions';
 
+import { PageContainer } from '../../components/Layout/PageContainer';
 import { RecordCarousel } from '../../components/Records/RecordCarousel';
 import { TrackList } from '../../components/Tracks/TrackList';
 
 const useStyles = makeStyles((theme) => ({
     box: {
-        padding: theme.spacing(3),
-        overflow: 'hidden',
+        padding: theme.spacing(0, 2),
     },
     divider: {
         backgroundColor: '#111',
@@ -110,7 +110,7 @@ export const SelectedRecord = (props) => {
                     // use the one of record array
                     recordArtistsString
                 );
-    
+
                 const newTrackObject = {
                     recordId: selected.data.id,
                     title: track.title,
@@ -124,49 +124,51 @@ export const SelectedRecord = (props) => {
         }).filter(t => t);
 
         return (
-            <Box className={classes.box}>
-                <RecordCarousel images={images} alt={alt} />
-                <TrackList list={newTracklistObject} action='add' />
-                <Divider className={classes.divider} />
-                <Typography paragraph variant="body2">
-                    <Typography variant="inherit" display="block">
-                        {/* Year:  */}
-                        {year}
+            <PageContainer>
+                <Box className={classes.box}>
+                    <RecordCarousel images={images} alt={alt} />
+                    <TrackList list={newTracklistObject} action='add' />
+                    <Divider className={classes.divider} />
+                    <Typography paragraph variant="body2">
+                        <Typography variant="inherit" display="block">
+                            {/* Year:  */}
+                            {year}
+                        </Typography>
+
+                        {/* labels */}
+                        {labels ? (
+                            <Typography variant="inherit" display="block">
+                                {/* Label:  */}
+                                {
+                                    labels.map((label, i, arr) => {
+                                        if (i < arr.length - 1) return `${label.name}  / `;
+                                        else return `${label.name}`;
+                                    })
+                                }
+                            </Typography>
+                        ) : (
+                            null
+                        )}
+
+                        {/* styles */}
+                        {styles ? (
+                            <Typography variant="inherit" display="block">
+                                {/* Style:  */}
+                                {
+                                    styles.map((style, i, arr) => {
+                                        if (i < arr.length - 1) return `${style}  / `;
+                                        else return `${style}`;
+                                    })
+                                }
+                            </Typography>
+                        ) : (
+                            null
+                        )}
+
                     </Typography>
-
-                    {/* labels */}
-                    {labels ? (
-                        <Typography variant="inherit" display="block">
-                            {/* Label:  */}
-                            {
-                                labels.map((label, i, arr) => {
-                                    if (i < arr.length - 1) return `${label.name}  / `;
-                                    else return `${label.name}`;
-                                })
-                            }
-                        </Typography>
-                    ) : (
-                        null
-                    )}
-
-                    {/* styles */}
-                    {styles ? (
-                        <Typography variant="inherit" display="block">
-                            {/* Style:  */}
-                            {
-                                styles.map((style, i, arr) => {
-                                    if (i < arr.length - 1) return `${style}  / `;
-                                    else return `${style}`;
-                                })
-                            }
-                        </Typography>
-                    ) : (
-                        null
-                    )}
-
-                </Typography>
-                {/* <Typography component='pre' color='inherit'>{JSON.stringify(selected.data, 0, '\t')}</Typography> */}
-            </Box>
+                    {/* <Typography component='pre' color='inherit'>{JSON.stringify(selected.data, 0, '\t')}</Typography> */}
+                </Box>
+            </PageContainer>
         )
     } else {
         return <React.Fragment />

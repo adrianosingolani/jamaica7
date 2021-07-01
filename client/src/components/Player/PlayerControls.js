@@ -28,9 +28,7 @@ import {
 
 const useStyles = makeStyles((theme) => ({
     box: {
-        backgroundColor: '#222',
-        padding: theme.spacing(1),
-        margin: theme.spacing(3),
+        margin: theme.spacing(3, 1),
     },
     item: {
         display: 'flex',
@@ -38,12 +36,10 @@ const useStyles = makeStyles((theme) => ({
     },
     largeIcon: {
         fontSize: '2.8rem',
-        color: 'white',
         margin: theme.spacing(0, 1),
     },
     smallIcon: {
         fontSize: '1.8rem',
-        color: 'white'
     },
     sliderPrimary: {
         color: 'white'
@@ -141,13 +137,13 @@ export const PlayerControls = ({ player, pauseTrack, playTrack, setCurrentTrack,
                     </Grid>
                 </Grid>
                 <Grid item sm={12} className={classes.item}>
-                    <Grid container spacing={1} alignItems='center'>
+                    <Grid container spacing={2} alignItems='center'>
                         <Grid item>
                             <Typography variant='subtitle2'>
                                 {player.currentPlaying.currentTime ? formatTime(player.currentPlaying.currentTime) : '0:00'}
                             </Typography>
                         </Grid>
-                        <Grid item xs>
+                        <Grid item xs='auto' xs>
                             <Slider
                                 classes={{ colorPrimary: classes.sliderPrimary }}
                                 value={player.currentPlaying.currentTime}

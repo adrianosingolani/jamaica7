@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link as LinkRouter } from 'react-router-dom';
 
 import { useFormik } from 'formik';
 import * as yup from 'yup';
@@ -10,6 +10,7 @@ import {
     TextField,
     Button,
     Grid,
+    Link
 } from '@material-ui/core';
 
 import PasswordField from '../../components/PasswordField/PasswordField';
@@ -92,7 +93,7 @@ export const Register = ({ history, auth, registerUser }) => {
                     <Grid container>
                         <Grid item xs></Grid>
                         <Grid item>
-                            <Link to="/login">Already have an account? Log in</Link>
+                            <Link component={LinkRouter} to="/login">Already have an account? Log in</Link>
                         </Grid>
                     </Grid>
                 </form >

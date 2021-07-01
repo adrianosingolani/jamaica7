@@ -1,16 +1,17 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import { Link, useLocation } from 'react-router-dom';
+import { Link as LinkRouter, useLocation } from 'react-router-dom';
 
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
 import { makeStyles } from '@material-ui/core/styles';
-// import { Checkbox, FormControlLabel } from '@material-ui/core';
+
 import {
     TextField,
     Button,
     Grid,
+    Link
 } from '@material-ui/core';
 
 import PasswordField from '../../components/PasswordField/PasswordField';
@@ -36,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
     },
     submit: {
         margin: theme.spacing(1, 0, 2),
-    },
+    }
 }));
 
 export const Login = ({ history, logInUser, auth }) => {
@@ -63,7 +64,7 @@ export const Login = ({ history, logInUser, auth }) => {
     });
     return (
         <AuthLoader>
-            <PageContainer title="Login" maxWidth="xs">
+            <PageContainer title="Login" maxWidth="xs" className={classes.container}>
                 <form className={classes.form} noValidate onSubmit={formik.handleSubmit}>
                     <TextField
                         variant="outlined"
@@ -85,10 +86,6 @@ export const Login = ({ history, logInUser, auth }) => {
                         error={formik.touched.password && Boolean(formik.errors.password)}
                         helperText={formik.touched.password && formik.errors.password}
                     />
-                    {/* <FormControlLabel
-                        control={<Checkbox value="remember" color="primary" />}
-                        label="Keep me logged in"
-                    /> */}
                     <Button
                         type="submit"
                         fullWidth
@@ -98,10 +95,10 @@ export const Login = ({ history, logInUser, auth }) => {
                     >Log In</Button>
                     <Grid container>
                         <Grid item xs>
-                            <Link to="/forgotpassword">Forgot password?</Link>
+                            <Link component={LinkRouter} to="/forgotpassword">Forgot password?</Link>
                         </Grid>
                         <Grid item>
-                            <Link to="/register">Don't have an account? Register</Link>
+                            <Link component={LinkRouter} to="/register">Don't have an account? Register</Link>
                         </Grid>
                     </Grid>
                 </form>

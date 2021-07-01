@@ -25,11 +25,10 @@ const useStyles = makeStyles((theme) => ({
     appbarRoot: {
         display: 'flex',
         position: 'relative',
-        backgroundColor: '#111',
         padding: theme.spacing(2),
     },
     appbarPrimary: {
-        backgroundColor: '#111',
+        backgroundColor: 'transparent',
     }
 }));
 

@@ -9,7 +9,7 @@ import { addTrackToPlaylist, setCurrentTrack, playTrack } from '../../store/acti
 const useStyles = makeStyles((theme) => ({
     track: {
         '&:hover': {
-            backgroundColor: '#333'
+            backgroundColor: '#333',
         },
         cursor: 'pointer',
     },
@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
         opacity: 0.1,
     },
     isPlaying: {
-        color: '#8AF',
+        color: theme.palette.primary.main,
     }
 }));
 

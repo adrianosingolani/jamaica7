@@ -28,11 +28,6 @@ const validationSchema = yup.object({
 });
 
 const useStyles = makeStyles((theme) => ({
-    paper: {
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-    },
     form: {
         marginTop: theme.spacing(0),
     },

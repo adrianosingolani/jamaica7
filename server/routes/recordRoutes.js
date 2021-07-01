@@ -33,7 +33,7 @@ router.post('/list', function (req, res) {
         genre: 'reggae',
         country: 'Jamaica',
         format: `7''`,
-        year: 1969,
+        year: 1968,
         page: 1,
         per_page: 100,
     }
@@ -51,6 +51,7 @@ router.post('/list', function (req, res) {
                 title: item.title,
                 thumb: item.thumb,
                 cover_image: item.cover_image,
+                community: item.community,
             }
         });
 

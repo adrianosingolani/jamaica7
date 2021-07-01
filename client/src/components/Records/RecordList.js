@@ -14,7 +14,7 @@ import RecordCard from './RecordCard';
 
 const useStyles = makeStyles((theme) => ({
     container: {
-        marginTop: theme.spacing(3),
+        paddingRight: theme.spacing(2),
     }
 }));
 
